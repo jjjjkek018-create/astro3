@@ -1,0 +1,544 @@
+/* ============================================
+   КОСМОГОНІЯ • ЖУРНАЛ СПОСТЕРЕЖЕНЬ
+   ============================================ */
+
+/* --- 1. ШРИФТИ ТА БАЗОВІ ЗМІННІ --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap');
+
+:root {
+  /* палітра старого астрономічного журналу */
+  --paper: #f3efe8;           /* теплий, злегка пожовклий папір */
+  --paper-deep: #e8e2d8;      /* глибший тон для фонових елементів */
+  --ink: #1e1b18;             /* глибокий коричнево-чорний, не різкий #000 */
+  --ink-light: #4a4440;       /* для другорядного тексту, виносок */
+  --ink-faint: #7a7268;       /* для найменш помітних елементів */
+  --rule: #c9bfb2;            /* лінії, рамки, роздільники */
+  --accent: #8b4513;          /* сатурніанський коричнево-червоний */
+  --accent-gold: #b8860b;     /* темне золото для зоряних акцентів */
+  --star-color: rgba(139, 69, 19, 0.12);
+  
+  /* ритм простору */
+  --measure: 720px;           /* оптимальна ширина читання */
+  --measure-wide: 900px;      /* для таблиць та широких елементів */
+  --baseline: 1.6rem;
+  --space-xs: 0.25rem;
+  --space-s: 0.75rem;
+  --space-m: 1.5rem;
+  --space-l: 3rem;
+  --space-xl: 5rem;
+  --space-xxl: 8rem;
+}
+
+/* --- 2. ЗОРЯНИЙ ФОН ІЗ ЗАВИТКАМИ (БЕЗ ЗОБРАЖЕНЬ, ЧИСТИЙ CSS) --- */
+
+body {
+  background-color: var(--paper-deep);
+  /* базовий фон з легким градієнтом, що імітує віньєтування старого тому */
+  background-image: 
+    /* глибоке віньєтування по краях */
+    radial-gradient(circle at 20% 30%, rgba(245, 240, 235, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(230, 220, 210, 0.3) 0%, transparent 60%),
+    /* зорі — дрібні крапки, розкидані вручну через множинні градієнти */
+    radial-gradient(1px 1px at 15% 8%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(2px 2px at 85% 12%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1.5px 1.5px at 5% 25%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(2px 2px at 92% 18%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1px 1px at 45% 5%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(2.5px 2.5px at 65% 8%, rgba(184, 134, 11, 0.08) 1px, transparent 1px),
+    radial-gradient(1px 1px at 78% 4%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1.5px 1.5px at 22% 15%, rgba(184, 134, 11, 0.06) 1px, transparent 1px),
+    radial-gradient(2px 2px at 58% 22%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1px 1px at 33% 35%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(3px 3px at 88% 45%, rgba(139, 69, 19, 0.06) 1px, transparent 1px),
+    radial-gradient(1.5px 1.5px at 12% 55%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(2px 2px at 72% 60%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1px 1px at 48% 48%, rgba(184, 134, 11, 0.05) 1px, transparent 1px),
+    radial-gradient(2.5px 2.5px at 95% 75%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1px 1px at 8% 80%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(1.5px 1.5px at 55% 85%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(2px 2px at 35% 92%, rgba(184, 134, 11, 0.07) 1px, transparent 1px),
+    radial-gradient(1px 1px at 75% 95%, var(--star-color) 1px, transparent 1px),
+    radial-gradient(3px 3px at 18% 68%, rgba(139, 69, 19, 0.05) 1px, transparent 1px),
+    /* вихори — великі м'які кола, що імітують небесні сфери та завитки */
+    radial-gradient(circle at 10% 20%, rgba(200, 180, 160, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 90% 15%, rgba(180, 160, 140, 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 5% 90%, rgba(200, 180, 160, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 95% 85%, rgba(180, 160, 140, 0.05) 0%, transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(220, 200, 180, 0.04) 0%, transparent 50%),
+    /* легка текстура паперу */
+    repeating-linear-gradient(45deg, rgba(180, 160, 140, 0.02) 0px, transparent 2px);
+  background-attachment: fixed;
+  
+  color: var(--ink);
+  font-family: 'Source Serif 4', 'Old Standard TT', 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  line-height: var(--baseline);
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  
+  /* налаштування рендерингу для читання */
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1, "pnum" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- 3. КОНТЕЙНЕР СТОРІНКИ (ШИРОКИЙ, ЯК ЖУРНАЛ) --- */
+
+body > * {
+  /* усі прямі нащадки body отримують обмеження ширини, але не сама сторінка */
+}
+
+/* основний контейнер для вмісту — широкий, на весь екран ноутбука */
+main, 
+article,
+.container {
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-l);
+  background-color: transparent;
+}
+
+/* для сторінок, де контент вкладено в body безпосередньо */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* якщо вміст іде прямо в body, обмежуємо його ширину через внутрішній wrapper */
+body > h1,
+body > h2,
+body > h3,
+body > h4,
+body > h5,
+body > h6,
+body > p,
+body > table,
+body > div:not([class]) {
+  max-width: var(--measure-wide);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-m);
+  padding-right: var(--space-m);
+}
+
+/* але таблиці можуть бути ширшими */
+body > table {
+  max-width: 1100px;
+}
+
+/* --- 4. ТИПОГРАФІКА (ЖУРНАЛЬНА, УРОЧИСТА) --- */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', 'Old Standard TT', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-m);
+}
+
+/* основний заголовок — як титул старовинного трактату */
+h1 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  word-spacing: 0.2em;
+  margin-top: var(--space-xxl);
+  margin-bottom: var(--space-l);
+  padding-bottom: var(--space-m);
+  border-bottom: 2px double var(--rule);
+  position: relative;
+}
+
+/* декоративна лінія після h1 */
+h1::after {
+  content: '✦';
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--accent-gold);
+  letter-spacing: normal;
+  margin-top: var(--space-s);
+  opacity: 0.6;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  font-style: italic;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-m);
+  margin-left: calc(-1 * var(--space-m));
+  color: var(--ink);
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-style: italic;
+  margin-top: var(--space-l);
+  color: var(--ink-light);
+}
+
+/* --- 5. АБЗАЦИ ТА ТЕКСТ --- */
+
+p {
+  margin: 0 0 var(--space-m) 0;
+  text-align: justify;
+  hyphens: auto;
+  word-spacing: 0.02em;
+}
+
+/* перший абзац після заголовка — з буквицею */
+h2 + p::first-letter,
+h3 + p::first-letter {
+  font-size: 4.2em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.15em;
+  margin-top: 0.05em;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: 'Cormorant Garamond', serif;
+  text-shadow: 1px 1px 0 rgba(139, 69, 19, 0.1);
+}
+
+/* наступні абзаци мають відступ */
+p + p {
+  text-indent: 1.8em;
+  margin-top: -0.2rem;
+}
+
+/* винятки для елементів, що йдуть після нетекстових блоків */
+table + p,
+div + p,
+figure + p,
+blockquote + p {
+  text-indent: 0 !important;
+}
+
+/* --- 6. ТАБЛИЦІ (АСТРОНОМІЧНІ, З ЛІНІЯМИ) --- */
+
+table {
+  width: 100%;
+  margin: var(--space-l) auto;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  font-family: 'Old Standard TT', 'Source Serif 4', serif;
+  background-color: rgba(243, 239, 232, 0.6);
+  backdrop-filter: blur(2px);
+  border: 1px solid var(--rule);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+th {
+  font-weight: 600;
+  font-family: 'Cormorant Garamond', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background-color: rgba(201, 191, 178, 0.2);
+  padding: var(--space-s) var(--space-m);
+  border-bottom: 2px solid var(--accent);
+  border-right: 1px solid var(--rule);
+  text-align: left;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: var(--space-s) var(--space-m);
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px dotted var(--rule);
+  vertical-align: top;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* парні рядки з легким відтінком */
+tr:nth-child(even) td {
+  background-color: rgba(200, 190, 175, 0.06);
+}
+
+/* --- 7. ЦИТАТИ, ВИНОСКИ, ФОРМУЛИ --- */
+
+blockquote {
+  margin: var(--space-l) var(--space-m);
+  padding: var(--space-m) var(--space-l);
+  background-color: rgba(232, 226, 216, 0.3);
+  border-left: 4px solid var(--accent);
+  font-style: italic;
+  color: var(--ink-light);
+  position: relative;
+  backdrop-filter: blur(1px);
+}
+
+/* лапки на початку цитати */
+blockquote::before {
+  content: '“';
+  font-size: 3rem;
+  position: absolute;
+  left: 0.2rem;
+  top: -0.5rem;
+  color: var(--accent-gold);
+  opacity: 0.3;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* математичні вирази, формули */
+.math, 
+.equation {
+  font-family: 'Old Standard TT', 'Courier New', monospace;
+  font-size: 1.1rem;
+  background-color: rgba(232, 226, 216, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* окремий блок для рівнянь */
+.equation-block {
+  display: block;
+  margin: var(--space-l) auto;
+  padding: var(--space-m) var(--space-l);
+  text-align: center;
+  font-family: 'Old Standard TT', monospace;
+  font-size: 1.2rem;
+  background-color: rgba(243, 239, 232, 0.5);
+  backdrop-filter: blur(2px);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* --- 8. ПОСИЛАННЯ ТА НАВІГАЦІЯ --- */
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent-gold);
+  transition: border-bottom 0.15s ease, color 0.15s ease;
+}
+
+a:hover {
+  color: var(--ink);
+  border-bottom: 1px solid var(--accent);
+}
+
+/* зноски */
+.footnote,
+.citation {
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* --- 9. СПИСКИ (НУМЕРОВАНІ ТА МАРКОВАНІ) --- */
+
+ul, ol {
+  margin: var(--space-m) 0 var(--space-m) var(--space-l);
+  padding-left: var(--space-m);
+}
+
+li {
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-xs);
+}
+
+/* маркери — зірочки замість стандартних */
+ul > li::marker {
+  content: '✦';
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+}
+
+ol > li::marker {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* --- 10. КОЛОНТИТУЛИ ТА ВИХІДНІ ДАНІ --- */
+
+.header-meta,
+.footer-meta {
+  font-family: 'Old Standard TT', serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-s);
+  margin-top: var(--space-xl);
+}
+
+/* горизонтальні лінії-роздільники з зірочками */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  margin: var(--space-xl) 0;
+  position: relative;
+}
+
+hr::after {
+  content: '✧ ✦ ✧';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--paper);
+  padding: 0 var(--space-m);
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  white-space: nowrap;
+}
+
+/* --- 11. ДЕКОРАТИВНІ ЕЛЕМЕНТИ (ЗІРКИ, ВИХОРИ) --- */
+
+/* клас для акцентованих зірок у тексті */
+.star-accent {
+  display: inline-block;
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+  margin: 0 0.2rem;
+  opacity: 0.7;
+}
+
+/* велика декоративна зірка на початку розділу */
+.section-ornament {
+  text-align: center;
+  margin: var(--space-l) 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.5em;
+  color: var(--accent-gold);
+  opacity: 0.5;
+}
+
+/* --- 12. АДАПТИВНІСТЬ (ЗБЕРІГАЄ ШИРОКИЙ ВИГЛЯД) --- */
+
+@media (max-width: 900px) {
+  body {
+    font-size: 1rem;
+  }
+  
+  main, article, .container,
+  body > h1, body > h2, body > p, body > table {
+    width: 95%;
+    padding-left: var(--space-s);
+    padding-right: var(--space-s);
+  }
+  
+  h1 {
+    font-size: 2.4rem;
+  }
+  
+  h2 {
+    font-size: 1.6rem;
+  }
+  
+  table {
+    font-size: 0.85rem;
+  }
+  
+  td, th {
+    padding: var(--space-xs);
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+  }
+  
+  h2 + p::first-letter {
+    font-size: 3.2em;
+  }
+  
+  p + p {
+    text-indent: 1.2em;
+  }
+  
+  hr::after {
+    font-size: 0.7rem;
+    padding: 0 var(--space-s);
+  }
+}
+
+/* --- 13. ДРУК (ЗБЕРЕЖЕННЯ СТИЛЮ) --- */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+    font-size: 11pt;
+  }
+  
+  body::before {
+    display: none;
+  }
+  
+  a {
+    color: black;
+    border-bottom: none;
+  }
+  
+  table {
+    background: none;
+    box-shadow: none;
+    border: 1px solid #999;
+  }
+  
+  h1::after,
+  hr::after {
+    display: none;
+  }
+  
+  .container, main, article {
+    max-width: 100%;
+    padding: 0;
+  }
+}
+
+/* --- 14. ВУЗЬКІ КОЛОНКИ ДЛЯ ШИРОКИХ ЕКРАНІВ (ГАЗЕТНИЙ СТИЛЬ) --- */
+
+@media (min-width: 1400px) {
+  body > p,
+  body > div:not([class]) p {
+    column-count: 2;
+    column-gap: var(--space-xl);
+    column-rule: 1px dotted var(--rule);
+  }
+  
+  h2, h3 {
+    column-span: all;
+  }
+  
+  table {
+    column-span: all;
+  }
+}

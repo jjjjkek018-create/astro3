@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • коперниканська революція</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .schemes-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .scheme-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .scheme-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .scheme-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.2 / 1;
+      background: #faf7f2;
+      border-radius: 2px;
+      border: 1px solid var(--rule);
+      margin-bottom: 0.75rem;
+    }
+    
+    .scheme-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+    
+    .scheme-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .scheme-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .latin {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .schemes-sidebar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ viii</p>
+    <h1>коперниканська революція: від геоцентризму до закону всесвітнього тяжіння</h1>
+    <div class="subtitle">коперник • кеплер • галілей • ньютон • наукова революція</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>наприкінці середньовіччя європейська космологія все ще спиралася на синтез аристотелівської фізики та птолемеєвої астрономії, освячений авторитетом церкви. земля перебувала в центрі світобудови, а небесні сфери оберталися навколо неї, несучи планети, сонце та зорі. ця модель, попри свою культурну вкоріненість, накопичила стільки епіциклів та поправок, що стала громіздкою й математично незграбною.</p>
+      
+      <p>у 1543 році, в рік своєї смерті, польський астроном і канонік <span class="latin">миколай коперник</span> опублікував трактат «de revolutionibus orbium coelestium» («про обертання небесних сфер»). у ньому він запропонував радикально нову гіпотезу: центром планетної системи є не земля, а сонце. земля ж — лише одна з планет, що обертаються навколо нього, до того ж обертається навколо власної осі.</p>
+      
+      <p>геліоцентрична модель коперника не була точнішою за птолемеєву — він так само використовував колові орбіти й епіцикли. але вона була <em>елегантнішою</em>: вона природно пояснювала ретроградний рух планет як оптичну ілюзію, що виникає, коли земля «обганяє» зовнішні планети, а також встановлювала правильний порядок планет за відстанню від сонця.</p>
+      
+      <div class="pull-quote">
+        «у середині ж усього перебуває сонце. хто ж у цьому найпрекраснішому храмі помістив би цей світильник в інше або краще місце, ніж те, звідки він може освітлювати все одночасно?»
+      </div>
+      
+      <p>наступний крок зробив німецький астроном <span class="latin">йоганн кеплер</span> на початку xvii століття. використовуючи безпрецедентно точні спостереження тихо браге за рухом марса, він відкинув догму про ідеальні кола і сформулював три закони планетних рухів: планети рухаються еліпсами, в одному з фокусів яких перебуває сонце; радіус-вектор планети за рівні проміжки часу описує рівні площі; квадрати періодів обертання планет пропорційні кубам великих півосей їхніх орбіт.</p>
+      
+      <p>паралельно італійський фізик <span class="latin">галілео галілей</span> спрямував у небо новий інструмент — телескоп. він побачив гори на місяці, фази венери, супутники юпітера та плями на сонці. ці відкриття завдали нищівного удару по аристотелівській догмі про незмінність і досконалість надмісячного світу. галілей став палким прихильником коперниканства, за що зазнав переслідувань інквізиції, але його праці заклали фундамент експериментальної фізики.</p>
+      
+      <p>вершиною наукової революції став <span class="latin">ісаак ньютон</span>. у 1687 році він опублікував «philosophiæ naturalis principia mathematica» («математичні начала натуральної філософії»), де сформулював три закони руху та закон всесвітнього тяжіння. ньютон показав, що та сама сила, яка змушує яблуко падати на землю, утримує місяць на орбіті та планети навколо сонця. кеплерові закони виявилися математичним наслідком ньютонівської гравітації.</p>
+      
+      <p>уперше в історії всесвіт постав як єдина фізична система, що підкоряється універсальним математичним законам. земля втратила свій привілейований статус центру світобудови — людство усвідомило, що живе на рядовій планеті біля пересічної зорі в безмежному космосі. цей світоглядний зсув, відомий як «коперниканська революція», став прологом до сучасної наукової космології.</p>
+    </div>
+    
+    <aside class="schemes-sidebar">
+      <div class="scheme-frame">
+        <div class="scheme-title">геліоцентрична система коперника</div>
+        <canvas id="canvas-copernicus" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> сонце</div>
+          <div class="legend-item"><span class="legend-color" style="background: #4a9aba;"></span> земля</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> планети</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">1543</div>
+            <div class="stat-label">рік публікації</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">6</div>
+            <div class="stat-label">планет</div>
+          </div>
+        </div>
+        <div class="scheme-caption">de revolutionibus orbium coelestium</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">закони кеплера</div>
+        <canvas id="canvas-kepler" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> сонце (фокус)</div>
+          <div class="legend-item"><span class="legend-color" style="background: #4a9aba;"></span> орбіта</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> планета</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">T² ∝ a³</div>
+            <div class="stat-label">3-й закон</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1609–1619</div>
+            <div class="stat-label">роки</div>
+          </div>
+        </div>
+        <div class="scheme-caption">еліптичні орбіти • закон площ • гармонія світу</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">відкриття галілея</div>
+        <canvas id="canvas-galileo" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> юпітер</div>
+          <div class="legend-item"><span class="legend-color" style="background: #4a9aba;"></span> супутники</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> орбіти</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">1610</div>
+            <div class="stat-label">рік</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4</div>
+            <div class="stat-label">супутники</div>
+          </div>
+        </div>
+        <div class="scheme-caption">siderius nuncius • медічейські зорі</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">закон всесвітнього тяжіння</div>
+        <canvas id="canvas-newton" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> маса m₁</div>
+          <div class="legend-item"><span class="legend-color" style="background: #4a9aba;"></span> маса m₂</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> сила F</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">F = G·m₁·m₂/r²</div>
+            <div class="stat-label">формула</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1687</div>
+            <div class="stat-label">рік</div>
+          </div>
+        </div>
+        <div class="scheme-caption">principia mathematica • універсальна гравітація</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="islam.html" class="nav-button">← ісламська астрономія</a>
+    </div>
+    <span class="chapter-indicator">розділ viii • наукова революція</span>
+    <div class="nav-buttons">
+      <a href="modernity.html" class="nav-button">сучасна космологія →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // === 1. ГЕЛІОЦЕНТРИЧНА СИСТЕМА КОПЕРНИКА ===
+    function drawCopernicus(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#0a0e14';
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      // сонце в центрі
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5a040';
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // орбіти планет
+      const planets = [
+        { name: 'меркурій', radius: 30, color: '#8b4513', size: 3 },
+        { name: 'венера', radius: 45, color: '#d4a76a', size: 4 },
+        { name: 'земля', radius: 60, color: '#4a9aba', size: 5 },
+        { name: 'марс', radius: 75, color: '#8b4513', size: 4 },
+        { name: 'юпітер', radius: 100, color: '#d4a76a', size: 7 },
+        { name: 'сатурн', radius: 125, color: '#8b4513', size: 6 }
+      ];
+      
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = 1;
+      
+      planets.forEach((planet, i) => {
+        // орбіта
+        ctx.strokeStyle = 'rgba(201, 191, 178, 0.3)';
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, planet.radius, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // планета
+        const angle = (i * 1.2 + Date.now() * 0.0001) % (Math.PI * 2);
+        const x = centerX + Math.cos(angle) * planet.radius;
+        const y = centerY + Math.sin(angle) * planet.radius;
+        
+        ctx.setLineDash([]);
+        ctx.fillStyle = planet.color;
+        ctx.beginPath();
+        ctx.arc(x, y, planet.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      ctx.fillStyle = '#d4c9b8';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('☉ сонце в центрі', centerX, h - 15);
+    }
+    
+    // === 2. ЗАКОНИ КЕПЛЕРА ===
+    function drawKepler(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2 - 10;
+      
+      // еліптична орбіта
+      const a = 100;
+      const b = 60;
+      const c = Math.sqrt(a*a - b*b);
+      const focusX = centerX - c;
+      
+      ctx.strokeStyle = '#4a9aba';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, a, b, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // сонце у фокусі
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5a040';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(focusX, centerY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // другий фокус (порожній)
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#c9bfb2';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.arc(centerX + c, centerY, 4, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // планета
+      const planetAngle = 0.8;
+      const planetX = centerX + a * Math.cos(planetAngle);
+      const planetY = centerY + b * Math.sin(planetAngle);
+      
+      ctx.fillStyle = '#8b4513';
+      ctx.beginPath();
+      ctx.arc(planetX, planetY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // радіус-вектор (закон площ)
+      ctx.strokeStyle = '#8b4513';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      ctx.beginPath();
+      ctx.moveTo(focusX, centerY);
+      ctx.lineTo(planetX, planetY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // підписи
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('сонце у фокусі', focusX, centerY + 25);
+      ctx.fillText('планета', planetX, planetY - 12);
+      
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillText('1-й закон: еліпс', w/2, h - 15);
+    }
+    
+    // === 3. ВІДКРИТТЯ ГАЛІЛЕЯ ===
+    function drawGalileo(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#0a0e14';
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      // юпітер
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#d4a76a';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 18, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // смуги юпітера
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#b8860b';
+      ctx.lineWidth = 2;
+      for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY + i * 6, 16, 3, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      
+      // супутники (медічейські зорі)
+      const moons = [
+        { name: 'іо', radius: 35, size: 4, color: '#4a9aba', angle: 0.3 },
+        { name: 'європа', radius: 50, size: 4, color: '#4a9aba', angle: 1.8 },
+        { name: 'ганімед', radius: 65, size: 5, color: '#4a9aba', angle: 3.5 },
+        { name: 'каллісто', radius: 80, size: 5, color: '#4a9aba', angle: 5.2 }
+      ];
+      
+      moons.forEach(moon => {
+        // орбіта
+        ctx.strokeStyle = 'rgba(139, 69, 19, 0.3)';
+        ctx.setLineDash([1, 3]);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, moon.radius, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // супутник
+        ctx.setLineDash([]);
+        const x = centerX + Math.cos(moon.angle) * moon.radius;
+        const y = centerY + Math.sin(moon.angle) * moon.radius * 0.7;
+        
+        ctx.fillStyle = moon.color;
+        ctx.beginPath();
+        ctx.arc(x, y, moon.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      ctx.fillStyle = '#d4c9b8';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('юпітер та медічейські зорі', centerX, h - 15);
+    }
+    
+    // === 4. ЗАКОН ВСЕСВІТНЬОГО ТЯЖІННЯ ===
+    function drawNewton(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // дві маси
+      const m1X = 80;
+      const m1Y = h/2;
+      const m2X = 260;
+      const m2Y = h/2;
+      
+      // маса 1 (більша)
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#d4a76a';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(m1X, m1Y, 25, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // маса 2 (менша)
+      ctx.fillStyle = '#4a9aba';
+      ctx.shadowColor = '#6ab0d0';
+      ctx.beginPath();
+      ctx.arc(m2X, m2Y, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowBlur = 0;
+      
+      // сила притягання (стрілки)
+      ctx.strokeStyle = '#8b4513';
+      ctx.lineWidth = 2;
+      
+      // від m1 до m2
+      ctx.beginPath();
+      ctx.moveTo(m1X + 25, m1Y);
+      ctx.lineTo(m2X - 15, m2Y);
+      ctx.stroke();
+      
+      // наконечник
+      ctx.fillStyle = '#8b4513';
+      ctx.beginPath();
+      ctx.moveTo(m2X - 15, m2Y);
+      ctx.lineTo(m2X - 25, m2Y - 6);
+      ctx.lineTo(m2X - 25, m2Y + 6);
+      ctx.closePath();
+      ctx.fill();
+      
+      // від m2 до m1
+      ctx.beginPath();
+      ctx.moveTo(m2X - 15, m2Y - 5);
+      ctx.lineTo(m1X + 25, m1Y - 5);
+      ctx.stroke();
+      
+      ctx.fillStyle = '#8b4513';
+      ctx.beginPath();
+      ctx.moveTo(m1X + 25, m1Y - 5);
+      ctx.lineTo(m1X + 35, m1Y - 11);
+      ctx.lineTo(m1X + 35, m1Y + 1);
+      ctx.closePath();
+      ctx.fill();
+      
+      // підписи
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('m₁', m1X, m1Y + 40);
+      ctx.fillText('m₂', m2X, m2Y + 28);
+      
+      ctx.font = '9px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#8b4513';
+      ctx.fillText('F', m1X + 80, m1Y - 15);
+      
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillText('F = G·m₁·m₂ / r²', w/2, h - 20);
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function redrawAll() {
+      drawCopernicus('canvas-copernicus');
+      drawKepler('canvas-kepler');
+      drawGalileo('canvas-galileo');
+      drawNewton('canvas-newton');
+    }
+    
+    redrawAll();
+    
+    // анімація для планет
+    function animate() {
+      drawCopernicus('canvas-copernicus');
+      requestAnimationFrame(animate);
+    }
+    animate();
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>

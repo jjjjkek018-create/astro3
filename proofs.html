@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • астрофізичні докази</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .simulation-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .simulation-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .simulation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .simulation-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: radial-gradient(circle at 30% 40%, #0a0e14 0%, #020408 100%);
+      border-radius: 2px;
+      border: 1px solid var(--accent-gold);
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    
+    .simulation-canvas:hover {
+      box-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
+    }
+    
+    .simulation-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+    
+    .sim-control-btn {
+      background: transparent;
+      border: 1px solid var(--rule);
+      color: var(--ink-light);
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: lowercase;
+      font-variant: small-caps;
+    }
+    
+    .sim-control-btn:hover {
+      background: var(--accent);
+      color: var(--paper);
+      border-color: var(--accent);
+    }
+    
+    .simulation-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .simulation-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .control-hint {
+      font-size: 0.65rem;
+      color: var(--ink-faint);
+      text-align: center;
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+    
+    .legend-compact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.65rem;
+      color: var(--ink-light);
+    }
+    
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.2rem;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .element-table {
+      margin: 1.5rem 0;
+      font-size: 0.85rem;
+    }
+    
+    .element-table td {
+      padding: 0.3rem 0.5rem;
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ ix</p>
+    <h1>астрофізичні докази: первинний нуклеосинтез та формування хімічного складу всесвіту</h1>
+    <div class="subtitle">дейтерієве вузьке місце • гелій-4 • літієва проблема • первинна плазма</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>наступним потужним теоретичним та емпіричним аргументом на користь великого вибуху стала теорія первинного нуклеосинтезу. у другій половині 1940-х років фізик українського походження георгій гамов разом із ральфом альфером та робертом германом розробили математичні розрахунки ядерних реакцій у надгарячому середовищі раннього всесвіту.</p>
+      
+      <p>вони припустили, що на найраніших стадіях уся існуюча матерія перебувала у формі високоенергетичної плазми, що складалася з вільних протонів, нейтронів та електронів, занурених в океан інтенсивного випромінювання (суміш, яку гамов назвав терміном «ілем»).</p>
+      
+      <p>у міру розширення та стрімкого охолодження простору (у критичному часовому проміжку приблизно від десятої секунди до двадцятої хвилини після сингулярності) створювалися унікальні термодинамічні умови для злиття нуклонів. вільні нейтрони, які є нестабільними частинками, почали з'єднуватися з протонами, утворюючи ядра дейтерію (важкого водню).</p>
+      
+      <p>через високу температуру цей дейтерій спочатку миттєво руйнувався високоенергетичними фотонами (так зване «дейтерієве вузьке місце»). однак, коли всесвіт достатньо охолов, ядра дейтерію змогли вижити і почали масово зливатися, утворюючи стабільні ядра гелію-4.</p>
+      
+      <p>розширення всесвіту відбувалося настільки швидко, що температура і густина впали нижче критичного рівня до того, як змогли утворитися важчі елементи, створивши нездоланний «масовий розрив» на елементах з атомною масою 5 і 8.</p>
+      
+      <div class="pull-quote">
+        згідно з розрахунками первинного нуклеосинтезу, глобальний хімічний склад всесвіту до моменту утворення перших зірок мав бути суворо визначеним: водень — близько 75% (базовий будівельний матеріал), гелій-4 — близько 25% (найстабільніший продукт), дейтерій та гелій-3 — близько 0,001%, літій-7 — близько 0,0000001%.
+      </div>
+      
+      <p>ці теоретичні розрахунки блискуче узгоджуються з сучасними астрономічними спостереженнями. спектроскопічний аналіз найстаріших, найменш металічних зірок у гало нашої галактики та вивчення спектрів поглинання квазарів у первозданних хмарах міжгалактичного газу повністю підтвердили передбачення щодо поширеності гелію-4 та дейтерію.</p>
+      
+      <p>той факт, що ніде у спостережуваному всесвіті масова частка гелію не опускається нижче 23 відсотків, є неспростовним доказом того, що всесвіт пройшов через ранню надгарячу термоядерну фазу.</p>
+      
+      <p>вимірювання мізерного вмісту первинного дейтерію дозволило астрофізикам з неймовірною точністю розрахувати первинну баріонну густину всесвіту, яка ідеально збіглася з незалежними вимірюваннями, отриманими з аналізу космічного мікрохвильового фону.</p>
+      
+      <p>водночас у сучасній фізиці зберігається аномалія, відома як «проблема первинного літію» — значна, майже триразова розбіжність між теоретично передбаченою кількістю літію-7 та емпірично виміряною його кількістю у старих зорях, що стимулює подальший розвиток нестандартних фізичних теорій та пошук нової фізики за межами стандартної моделі.</p>
+    </div>
+    
+    <aside class="simulation-sidebar">
+      <div class="simulation-frame">
+        <div class="simulation-title">первинний нуклеосинтез • великий вибух</div>
+        <canvas id="canvas-nucleosynthesis" class="simulation-canvas" width="340" height="340"></canvas>
+        <div class="simulation-controls">
+          <button class="sim-control-btn" data-action="reset">⟲ початок</button>
+          <button class="sim-control-btn" data-action="step">→ крок</button>
+          <button class="sim-control-btn" data-action="play">▶ відтворити</button>
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="nucleo-time">t = 0</div>
+            <div class="stat-label">час</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="nucleo-temp">10¹² K</div>
+            <div class="stat-label">температура</div>
+          </div>
+        </div>
+        <div class="legend-compact">
+          <span><span class="legend-dot" style="background: #4a9aba;"></span> протони</span>
+          <span><span class="legend-dot" style="background: #d4a76a;"></span> нейтрони</span>
+          <span><span class="legend-dot" style="background: #f5d67a;"></span> дейтерій</span>
+          <span><span class="legend-dot" style="background: #8b4513;"></span> гелій-4</span>
+        </div>
+        <div class="simulation-caption">від кварк-глюонної плазми до перших ядер</div>
+        <div class="control-hint">✧ натисніть на полотно, щоб оновити ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">хімічний склад • частки елементів</div>
+        <canvas id="canvas-abundances" class="scheme-canvas" width="340" height="200" style="aspect-ratio: 1.7/1;"></canvas>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="h-abundance">75%</div>
+            <div class="stat-label">¹H</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="he-abundance">25%</div>
+            <div class="stat-label">⁴He</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="d-abundance">0.001%</div>
+            <div class="stat-label">²H</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="li-abundance">10⁻⁷%</div>
+            <div class="stat-label">⁷Li</div>
+          </div>
+        </div>
+        <div class="simulation-caption">первинний хімічний склад всесвіту</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">літієва проблема</div>
+        <canvas id="canvas-lithium" class="scheme-canvas" width="340" height="200" style="aspect-ratio: 1.7/1;"></canvas>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" style="color: #4a9aba;">теорія</div>
+            <div class="stat-label">~4.5×10⁻¹⁰</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="color: #8b4513;">спостереження</div>
+            <div class="stat-label">~1.6×10⁻¹⁰</div>
+          </div>
+        </div>
+        <div class="simulation-caption">розбіжність у ~3 рази — нова фізика?</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="modernity.html" class="nav-button">← сучасна космологія</a>
+    </div>
+    <span class="chapter-indicator">розділ ix • первинний нуклеосинтез</span>
+    <div class="nav-buttons">
+      <a href="inflation.html" class="nav-button">космічна інфляція →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // === СТАН СИМУЛЯЦІЇ НУКЛЕОСИНТЕЗУ ===
+    let nucleoStep = 0;
+    const maxSteps = 6;
+    let animationInterval = null;
+    
+    const timeLabels = ['t = 0', 't = 1 с', 't = 10 с', 't = 100 с', 't = 300 с', 't = 1000 с', 't = 20 хв'];
+    const tempLabels = ['10¹² K', '10¹⁰ K', '3×10⁹ K', '10⁹ K', '5×10⁸ K', '3×10⁸ K', '10⁷ K'];
+    
+    // === 1. СИМУЛЯЦІЯ НУКЛЕОСИНТЕЗУ ===
+    function drawNucleosynthesis(canvasId, step) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — залежить від етапу
+      const bgColors = ['#000000', '#1a0505', '#2a0808', '#1a0a15', '#0a1220', '#0a1525', '#050a12'];
+      ctx.fillStyle = bgColors[step] || '#0a0e14';
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      // малюємо частинки залежно від етапу
+      if (step === 0) {
+        // кварк-глюонна плазма — хаос кольорових точок
+        for (let i = 0; i < 200; i++) {
+          const x = Math.random() * w;
+          const y = Math.random() * h;
+          const color = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ff8b94'][Math.floor(Math.random() * 5)];
+          ctx.fillStyle = color;
+          ctx.globalAlpha = 0.7;
+          ctx.beginPath();
+          ctx.arc(x, y, 2 + Math.random() * 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = '#f0e6d3';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('кварк-глюонна плазма', centerX, h - 15);
+      } else if (step === 1) {
+        // протони та нейтрони
+        for (let i = 0; i < 40; i++) {
+          const x = 20 + Math.random() * (w - 40);
+          const y = 20 + Math.random() * (h - 40);
+          ctx.fillStyle = i % 3 === 0 ? '#d4a76a' : '#4a9aba';
+          ctx.shadowColor = '#a0d0ff';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#d4c9b8';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.fillText('p⁺ та n — вільні нуклони', centerX, h - 15);
+      } else if (step === 2) {
+        // поява дейтерію
+        for (let i = 0; i < 30; i++) {
+          const x = 20 + Math.random() * (w - 40);
+          const y = 20 + Math.random() * (h - 40);
+          ctx.fillStyle = i % 4 === 0 ? '#f5d67a' : (i % 3 === 0 ? '#d4a76a' : '#4a9aba');
+          ctx.beginPath();
+          ctx.arc(x, y, i % 4 === 0 ? 5 : 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#f5d67a';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.fillText('²H — дейтерій (важкий водень)', centerX, h - 15);
+      } else if (step === 3) {
+        // дейтерієве вузьке місце — руйнування фотонами
+        for (let i = 0; i < 25; i++) {
+          const x = 20 + Math.random() * (w - 40);
+          const y = 20 + Math.random() * (h - 40);
+          ctx.fillStyle = '#f5d67a';
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // фотони (гамма)
+        ctx.strokeStyle = '#ffe66d';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 15; i++) {
+          const x = 30 + Math.random() * (w - 60);
+          const y = 30 + Math.random() * (h - 60);
+          ctx.beginPath();
+          ctx.moveTo(x - 8, y - 8);
+          ctx.lineTo(x + 8, y + 8);
+          ctx.moveTo(x + 8, y - 8);
+          ctx.lineTo(x - 8, y + 8);
+          ctx.stroke();
+        }
+        ctx.fillStyle = '#ffaa66';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.fillText('дейтерієве вузьке місце (фоторуйнування)', centerX, h - 15);
+      } else if (step === 4) {
+        // формування гелію-4
+        for (let i = 0; i < 15; i++) {
+          const x = 30 + Math.random() * (w - 60);
+          const y = 30 + Math.random() * (h - 60);
+          ctx.fillStyle = '#8b4513';
+          ctx.shadowColor = '#d4a76a';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+        // залишки протонів
+        for (let i = 0; i < 20; i++) {
+          const x = 20 + Math.random() * (w - 40);
+          const y = 20 + Math.random() * (h - 40);
+          ctx.fillStyle = '#4a9aba';
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#d4a76a';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.fillText('⁴He — ядра гелію', centerX, h - 15);
+      } else {
+        // кінцевий стан — переважно водень і гелій
+        for (let i = 0; i < 12; i++) {
+          const x = 30 + Math.random() * (w - 60);
+          const y = 30 + Math.random() * (h - 60);
+          ctx.fillStyle = '#8b4513';
+          ctx.beginPath();
+          ctx.arc(x, y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        for (let i = 0; i < 35; i++) {
+          const x = 20 + Math.random() * (w - 40);
+          const y = 20 + Math.random() * (h - 40);
+          ctx.fillStyle = '#4a9aba';
+          ctx.beginPath();
+          ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#d4c9b8';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.fillText('~75% H, ~25% He', centerX, h - 15);
+      }
+      
+      // оновлення статистики
+      document.getElementById('nucleo-time').textContent = timeLabels[step] || 't = 20 хв';
+      document.getElementById('nucleo-temp').textContent = tempLabels[step] || '10⁷ K';
+    }
+    
+    // === 2. ДІАГРАМА ХІМІЧНОГО СКЛАДУ ===
+    function drawAbundances(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      const elements = [
+        { name: 'H', abundance: 75, color: '#4a9aba' },
+        { name: 'He', abundance: 24.9, color: '#8b4513' },
+        { name: 'D, ³He', abundance: 0.099, color: '#f5d67a' },
+        { name: '⁷Li', abundance: 0.0000001, color: '#d4a76a' }
+      ];
+      
+      const barWidth = 50;
+      const startX = 30;
+      const baseY = h - 30;
+      
+      elements.forEach((el, i) => {
+        const x = startX + i * 70;
+        let barHeight;
+        
+        if (el.abundance > 1) {
+          barHeight = (el.abundance / 75) * 120;
+        } else if (el.abundance > 0.01) {
+          barHeight = 15;
+        } else {
+          barHeight = 5;
+        }
+        
+        // стовпчик
+        ctx.fillStyle = el.color;
+        ctx.fillRect(x, baseY - barHeight, barWidth, barHeight);
+        
+        // підпис
+        ctx.fillStyle = '#4a4440';
+        ctx.font = '8px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(el.name, x + barWidth/2, baseY + 12);
+        
+        // значення
+        ctx.font = '7px "Old Standard TT", serif';
+        if (el.abundance > 1) {
+          ctx.fillText(el.abundance + '%', x + barWidth/2, baseY - barHeight - 5);
+        } else if (el.abundance > 0.01) {
+          ctx.fillText(el.abundance + '%', x + barWidth/2, baseY - barHeight - 5);
+        } else {
+          ctx.fillText('~10⁻⁷%', x + barWidth/2, baseY - barHeight - 5);
+        }
+      });
+      
+      // вісь
+      ctx.strokeStyle = '#c9bfb2';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(20, baseY);
+      ctx.lineTo(w - 20, baseY);
+      ctx.stroke();
+      
+      // заголовок
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillText('первинний хімічний склад (за масою)', w/2, 20);
+    }
+    
+    // === 3. ЛІТІЄВА ПРОБЛЕМА ===
+    function drawLithium(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // два стовпчики
+      const barWidth = 80;
+      const theoryX = 50;
+      const obsX = 200;
+      const baseY = h - 30;
+      
+      // теоретичне значення
+      ctx.fillStyle = '#4a9aba';
+      ctx.fillRect(theoryX, baseY - 100, barWidth, 100);
+      
+      // спостережуване значення (у 3 рази менше)
+      ctx.fillStyle = '#8b4513';
+      ctx.fillRect(obsX, baseY - 35, barWidth, 35);
+      
+      // підписи
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('теорія', theoryX + barWidth/2, baseY + 12);
+      ctx.fillText('спостереження', obsX + barWidth/2, baseY + 12);
+      
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillText('~4.5×10⁻¹⁰', theoryX + barWidth/2, baseY - 108);
+      ctx.fillText('~1.6×10⁻¹⁰', obsX + barWidth/2, baseY - 43);
+      
+      // стрілка розбіжності
+      ctx.strokeStyle = '#b8860b';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(theoryX + barWidth/2, baseY - 105);
+      ctx.lineTo(obsX + barWidth/2, baseY - 40);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      ctx.fillStyle = '#b8860b';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillText('×3', w/2, baseY - 75);
+      
+      // заголовок
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillText('проблема первинного літію (⁷Li)', w/2, 20);
+    }
+    
+    // === УПРАВЛІННЯ СИМУЛЯЦІЄЮ ===
+    function updateNucleoStep(delta) {
+      nucleoStep = Math.min(maxSteps, Math.max(0, nucleoStep + delta));
+      drawNucleosynthesis('canvas-nucleosynthesis', nucleoStep);
+    }
+    
+    function resetNucleo() {
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+      nucleoStep = 0;
+      drawNucleosynthesis('canvas-nucleosynthesis', nucleoStep);
+    }
+    
+    function stepNucleo() {
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+      updateNucleoStep(1);
+    }
+    
+    function playNucleo() {
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+      animationInterval = setInterval(() => {
+        if (nucleoStep >= maxSteps) {
+          clearInterval(animationInterval);
+          animationInterval = null;
+        } else {
+          updateNucleoStep(1);
+        }
+      }, 800);
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function redrawAll() {
+      drawNucleosynthesis('canvas-nucleosynthesis', nucleoStep);
+      drawAbundances('canvas-abundances');
+      drawLithium('canvas-lithium');
+    }
+    
+    redrawAll();
+    
+    // обробники кнопок
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        if (action === 'reset') resetNucleo();
+        else if (action === 'step') stepNucleo();
+        else if (action === 'play') playNucleo();
+      });
+    });
+    
+    // клік на canvas нуклеосинтезу
+    document.getElementById('canvas-nucleosynthesis').addEventListener('click', () => {
+      stepNucleo();
+    });
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • месопотамія</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .simulation-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .simulation-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .simulation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .simulation-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: radial-gradient(circle at center, rgba(30, 27, 24, 0.95) 0%, rgba(20, 18, 16, 1) 100%);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      border: 1px solid var(--accent-gold);
+      margin-bottom: 0.75rem;
+    }
+    
+    .simulation-canvas:hover {
+      box-shadow: 0 0 20px rgba(184, 134, 11, 0.2);
+    }
+    
+    .simulation-info {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .simulation-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .simulation-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .control-hint {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      text-align: center;
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.4rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .simulation-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ ii</p>
+    <h1>месопотамська космогонія: від міфологічного наративу до астрономічних компендіумів</h1>
+    <div class="subtitle">енума еліш • шляхи ану, енліля та еа • компендіум mul.apin</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>детальний аналіз месопотамської традиції виявляє глибокий та нерозривний зв'язок між космогонічним епосом та суворими астрономічними вимірюваннями. фундаментальним текстом, що описує вавилонську космогонію, є епос «енума еліш». згідно з цим текстом, на початку існували лише первісні недиференційовані води: прісні води апсу та солоні води океану тіамат.</p>
+      
+      <p>після масштабного конфлікту між старшим і молодшим поколіннями богів верховий бог мардук перемагає тіамат і створює з її розділеного тіла архітектуру всесвіту. у п'ятій таблиці епосу фіксується акт фундаментального астрономічного впорядкування: мардук розділяє небесну сферу на три зони або шляхи, присвячені трьом головним божествам месопотамського пантеону — ану, енлілю та еа.</p>
+      
+      <p>цей міфологічний поділ не був абстрактною поезією, а мав пряме математично-астрономічне відображення у вавилонських наукових компендіумах. найвідомішим та найповнішим з таких текстів є компендіум mul.apin, названий так за своїм інципітом, що перекладається як «зоря плуг».</p>
+      
+      <p>цей масивний текст, укладений орієнтовно близько 1000 року до нашої ери (хоча найдавніша збережена копія датується 686 роком до нашої ери), є вершиною давньовавилонської спостережної астрономії. компендіум містить точний каталог із 66 зірок та сузір'їв, які систематизовані відповідно до міфологічної структури небесних шляхів, що засвідчує пряму конвергенцію релігії та науки тієї епохи.</p>
+      
+      <div class="pull-quote">
+        розподіл астрономічних об'єктів у тексті виглядає наступним чином: шлях енліля — 33 зорі та сузір'я у північній півкулі неба (головна зоря — плуг, частина сучасного сузір'я дракона); шлях ану — 23 зорі та сузір'я в екваторіальній небесній зоні (головне — поле, що відповідає чотирьом зорям квадрата пегаса); шлях еа — 15 зір та сузір'їв у південній півкулі неба (головна — риба, сучасне сузір'я південної риби).
+      </div>
+      
+      <p>окрім просторової каталогізації, текст mul.apin містить складні методи обчислення тривалості світлового дня за допомогою вимірювання довжини тіней, а також вказівки на точні дати геліакічних сходів, заходів та кульмінацій зірок. це дозволяло жерцям-астрономам створити базову математичну структуру вавилонської зоряної карти.</p>
+      
+      <p>пізніші вавилонські клинописні таблички епохи еллінізму (зокрема з третього століття до нашої ери) демонструють подальшу математизацію космології: вони містять паралельні стовпці цифр для прогнозування періодичності таких явищ, як фази місяця, опозиції, кон'юнкції та затемнення. інструменти на кшталт астролябії b (vat 9416) також використовували списки з трьох зірок для кожного місяця, відображаючи систему мардука у суто практичному застосуванні для хронометрії. таким чином, первинний космогонічний міф став каркасом для створення однієї з найточніших астрономічних систем стародавнього світу.</p>
+    </div>
+    
+    <aside class="simulation-sidebar">
+      <div class="simulation-frame">
+        <div class="simulation-title">шлях енліля • північне небо</div>
+        <canvas id="canvas-enlil" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          <span id="enlil-star-count">33</span> зорі та сузір'я
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="enlil-brightest">плуг</div>
+            <div class="stat-label">головна</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="enlil-visible">нічне</div>
+            <div class="stat-label">видимість</div>
+          </div>
+        </div>
+        <div class="simulation-caption">північна півкуля • сузір'я дракона</div>
+        <div class="control-hint">✧ натисніть, щоб оновити зоряний візерунок ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">шлях ану • екваторіальна зона</div>
+        <canvas id="canvas-anu" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          <span id="anu-star-count">23</span> зорі та сузір'я
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="anu-brightest">поле</div>
+            <div class="stat-label">головна</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="anu-visible">цілодобово</div>
+            <div class="stat-label">видимість</div>
+          </div>
+        </div>
+        <div class="simulation-caption">екватор • квадрат пегаса</div>
+        <div class="control-hint">✧ натисніть, щоб оновити зоряний візерунок ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">шлях еа • південне небо</div>
+        <canvas id="canvas-ea" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          <span id="ea-star-count">15</span> зір та сузір'їв
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="ea-brightest">риба</div>
+            <div class="stat-label">головна</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="ea-visible">сезонне</div>
+            <div class="stat-label">видимість</div>
+          </div>
+        </div>
+        <div class="simulation-caption">південна півкуля • південна риба</div>
+        <div class="control-hint">✧ натисніть, щоб оновити зоряний візерунок ✧</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="index.html" class="nav-button">← вступ</a>
+    </div>
+    <span class="chapter-indicator">розділ ii • mul.apin</span>
+    <div class="nav-buttons">
+      <a href="egypt.html" class="nav-button">єгипет →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // конфігурація для трьох небесних шляхів
+    const paths = [
+      { id: 'enlil', starCount: 33, brightStar: 'плуг', visible: 'нічне', color: '#c9bfb2', accentColor: '#b8860b' },
+      { id: 'anu', starCount: 23, brightStar: 'поле', visible: 'цілодобово', color: '#d4c9b8', accentColor: '#8b4513' },
+      { id: 'ea', starCount: 15, brightStar: 'риба', visible: 'сезонне', color: '#bfb4a4', accentColor: '#b8860b' }
+    ];
+    
+    // функція для малювання зоряного неба на canvas
+    function drawSkyPath(canvasId, config) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = Math.min(width, height) * 0.42;
+      
+      // очищення
+      ctx.clearRect(0, 0, width, height);
+      
+      // фон — глибоке небо з градієнтом
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.5);
+      gradient.addColorStop(0, '#1a1612');
+      gradient.addColorStop(0.7, '#0d0b09');
+      gradient.addColorStop(1, '#050403');
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 1.3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // небесне коло (межа шляху)
+      ctx.strokeStyle = config.accentColor;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([2, 6]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // внутрішнє коло
+      ctx.strokeStyle = 'rgba(201, 191, 178, 0.2)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 0.7, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // малюємо зорі
+      const starPositions = [];
+      for (let i = 0; i < config.starCount; i++) {
+        // випадковий кут та відстань від центру (але в межах кола)
+        const angle = (i * 1.7 + Math.random() * 2) * Math.PI * 2 / config.starCount;
+        const dist = radius * (0.3 + Math.random() * 0.65);
+        const x = centerX + Math.cos(angle) * dist;
+        const y = centerY + Math.sin(angle) * dist;
+        
+        // розмір зорі залежить від позиції
+        const size = 1 + Math.floor(Math.random() * 4);
+        const brightness = 0.5 + Math.random() * 0.5;
+        
+        // колір зорі — від теплого білого до золотавого
+        const starColor = i % 7 === 0 ? '#e8c872' : (i % 5 === 0 ? '#d4a76a' : '#f0e6d3');
+        
+        ctx.fillStyle = starColor;
+        ctx.globalAlpha = brightness;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 0.7, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // деякі зорі мають ореол
+        if (i % 11 === 0 || i % 13 === 0) {
+          ctx.shadowColor = config.accentColor;
+          ctx.shadowBlur = 8;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+        
+        starPositions.push({ x, y, size, brightness });
+      }
+      
+      ctx.globalAlpha = 1.0;
+      
+      // головна зоря (найяскравіша, ближче до центру або на видному місці)
+      const mainStarAngle = 0.8;
+      const mainStarDist = radius * 0.5;
+      const mainX = centerX + Math.cos(mainStarAngle) * mainStarDist;
+      const mainY = centerY + Math.sin(mainStarAngle) * mainStarDist;
+      
+      // ореол головної зорі
+      ctx.shadowColor = config.accentColor;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = '#f5d67a';
+      ctx.beginPath();
+      ctx.arc(mainX, mainY, 5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = '#fff8e7';
+      ctx.beginPath();
+      ctx.arc(mainX, mainY, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // додаємо кілька сузір'їв (лінії між зорями)
+      ctx.strokeStyle = 'rgba(184, 134, 11, 0.2)';
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < starPositions.length - 1; i += 3) {
+        const s1 = starPositions[i];
+        const s2 = starPositions[(i + 1) % starPositions.length];
+        if (s1 && s2) {
+          const dist = Math.sqrt(Math.pow(s1.x - s2.x, 2) + Math.pow(s1.y - s2.y, 2));
+          if (dist < radius * 0.5) {
+            ctx.beginPath();
+            ctx.moveTo(s1.x, s1.y);
+            ctx.lineTo(s2.x, s2.y);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // підпис головної зорі
+      ctx.font = 'italic 8px "Old Standard TT", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText(config.brightStar, mainX, mainY - 12);
+      
+      // кількість зір у кутку
+      ctx.font = '10px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#7a7268';
+      ctx.fillText('✧ ' + config.starCount, width - 25, height - 10);
+    }
+    
+    // ініціалізація всіх трьох полотен
+    function initAllCanvases() {
+      drawSkyPath('canvas-enlil', paths[0]);
+      drawSkyPath('canvas-anu', paths[1]);
+      drawSkyPath('canvas-ea', paths[2]);
+    }
+    
+    // додаємо обробники кліку для оновлення
+    document.getElementById('canvas-enlil').addEventListener('click', function() {
+      drawSkyPath('canvas-enlil', paths[0]);
+    });
+    
+    document.getElementById('canvas-anu').addEventListener('click', function() {
+      drawSkyPath('canvas-anu', paths[1]);
+    });
+    
+    document.getElementById('canvas-ea').addEventListener('click', function() {
+      drawSkyPath('canvas-ea', paths[2]);
+    });
+    
+    // початкове малювання
+    initAllCanvases();
+    
+    // оновлення при зміні розміру вікна (якщо canvas масштабується)
+    window.addEventListener('resize', function() {
+      initAllCanvases();
+    });
+  })();
+</script>
+
+</body>
+</html>

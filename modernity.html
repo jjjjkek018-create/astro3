@@ -1,0 +1,663 @@
+```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • сучасна космологія</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .schemes-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .scheme-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .scheme-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .scheme-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.2 / 1;
+      background: #faf7f2;
+      border-radius: 2px;
+      border: 1px solid var(--rule);
+      margin-bottom: 0.75rem;
+    }
+    
+    .scheme-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.7rem;
+      color: var(--ink-light);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+    
+    .scheme-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .scheme-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .schemes-sidebar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ viii</p>
+    <h1>сучасна наукова космологія: парадигмальна боротьба між теорією великого вибуху та стаціонарною моделлю</h1>
+    <div class="subtitle">загальна теорія відносності • закон габбла • великий вибух • стаціонарний всесвіт</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>у двадцятому столітті космогонія здійснила остаточний перехід від філософської дисципліни до надточної фізичної науки. каталізатором цього процесу стало створення альбертом айнштайном загальної теорії відносності, рівняння якої вперше дозволили описувати всесвіт як єдину динамічну фізичну систему.</p>
+      
+      <p>після того, як астроном едвін габбл емпірично виявив космологічне розширення простору шляхом вимірювання червоного зміщення у спектрах далеких галактик (що довело прямо пропорційну залежність між відстанню до галактики та швидкістю її віддалення), статична модель всесвіту була остаточно відкинута.</p>
+      
+      <p>на її місце у середині століття претендували дві фундаментальні теоретичні концепції. першою була еволюційна модель, яка згодом отримала іронічну назву теорія великого вибуху. вона була концептуально запропонована бельгійським абатом і фізиком жоржем леметром (гіпотеза «первинного атома») і математично обґрунтована олександром фрідманом та георгієм гамовим.</p>
+      
+      <p>ця теорія постулювала, що всесвіт має скінченний вік і розвинувся з початкового сингулярного стану надзвичайної густини та температури приблизно 13,8 мільярда років тому. з плином часу простір невпинно розширювався, що призводило до зменшення загальної густини речовини та падіння температури, створюючи умови для формування матерії, зірок і галактик.</p>
+      
+      <p>другою концепцією була теорія стаціонарного всесвіту, розроблена у 1948 році астрофізиками фредом хойлом, германом бонді та томасом голдом. ця елегантна модель ґрунтувалася на так званому «ідеальному космологічному принципі». якщо стандартний космологічний принцип стверджує, що всесвіт є однорідним та ізотропним у просторі (виглядає однаково в усіх напрямках), то ідеальний принцип додавав до цього ще й однорідність у часі. згідно з цією моделлю, всесвіт не мав ані початкової точки творення, ані кінця — він існував вічно в незмінному макроскопічному стані.</p>
+      
+      <p>оскільки факт розширення космосу був беззаперечним, стаціонарна теорія зіткнулася з проблемою розрідження матерії. для вирішення цього парадоксу хойл та його колеги ввели гіпотезу безперервного спонтанного створення матерії з вакууму (приблизно одного атома водню на кубічний метр простору кожні сто мільярдів років). цього мінімального приросту маси було достатньо, щоб компенсувати розширення і підтримувати загальну густину всесвіту на абсолютно постійному рівні.</p>
+      
+      <p>згідно з цією теорією, якби спостерігач подивився на найвіддаленіші ділянки космосу, він би побачив таку ж саму суміш молодих і старих галактик, як і в нашому локальному середовищі.</p>
+      
+      <p>вирішення гострого конфлікту між цими двома парадигмами відбулося виключно на основі строгої емпіричної перевірки. першим серйозним ударом по стаціонарній теорії стали масштабні дослідження в галузі радіоастрономії, проведені мартіном райлом у 1950-х роках. райл та його команда систематично підрахували кількість потужних радіоджерел (радіогалактик та квазарів) на різних відстанях від землі. у стаціонарному всесвіті густина розподілу таких об'єктів мала б залишатися сталою незалежно від відстані.</p>
+      
+      <p>проте результати тривалих спостережень переконливо показали наявність значного, статистично достовірного надлишку слабких (а отже, глибоко віддалених у просторі) радіоджерел порівняно з яскравими (близькими). оскільки в астрономії погляд углиб простору є поглядом у минуле, це означало, що мільярди років тому радіоджерел та квазарів у всесвіті було значно більше, ніж у сучасну епоху. цей факт беззаперечно доводив еволюцію всесвіту в часі: космос змінювався, старів і еволюціонував, що повністю спростовувало ідеальний космологічний принцип і завдало фатального удару стаціонарній моделі.</p>
+    </div>
+    
+    <aside class="schemes-sidebar">
+      <div class="scheme-frame">
+        <div class="scheme-title">закон габбла • розширення всесвіту</div>
+        <canvas id="canvas-hubble" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> галактики</div>
+          <div class="legend-item"><span class="legend-color" style="background: #b8860b;"></span> вектор швидкості</div>
+          <div class="legend-item"><span class="legend-color" style="background: #d4a76a; opacity: 0.5;"></span> простір</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">v = H₀·d</div>
+            <div class="stat-label">закон габбла</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~70</div>
+            <div class="stat-label">км/с/мпк</div>
+          </div>
+        </div>
+        <div class="scheme-caption">червоне зміщення пропорційне відстані</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">великий вибух • еволюційна модель</div>
+        <canvas id="canvas-bigbang" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> сингулярність</div>
+          <div class="legend-item"><span class="legend-color" style="background: #d4a76a;"></span> інфляція</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> формування структур</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">13.8</div>
+            <div class="stat-label">млрд років</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~2.7 K</div>
+            <div class="stat-label">релікт</div>
+          </div>
+        </div>
+        <div class="scheme-caption">від сингулярності до сучасного всесвіту</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">стаціонарний всесвіт • хойл, бонді, голд</div>
+        <canvas id="canvas-steady" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #4a6a8a;"></span> існуюча матерія</div>
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> новостворена матерія</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513; opacity: 0.4;"></span> розширення</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">∞</div>
+            <div class="stat-label">вік</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">const</div>
+            <div class="stat-label">густина</div>
+          </div>
+        </div>
+        <div class="scheme-caption">безперервне творення матерії з вакууму</div>
+      </div>
+      
+      <div class="scheme-frame">
+        <div class="scheme-title">радіоджерела • дослідження райла</div>
+        <canvas id="canvas-ryle" class="scheme-canvas" width="340" height="280"></canvas>
+        <div class="scheme-legend">
+          <div class="legend-item"><span class="legend-color" style="background: #f5d67a;"></span> близькі (сучасні)</div>
+          <div class="legend-item"><span class="legend-color" style="background: #8b4513;"></span> далекі (минулі)</div>
+          <div class="legend-item"><span class="legend-color" style="background: #4a6a8a;"></span> лінія тренду</div>
+        </div>
+        <div class="scheme-stats">
+          <div class="stat-item">
+            <div class="stat-value">надлишок</div>
+            <div class="stat-label">далеких</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">еволюція</div>
+            <div class="stat-label">підтверджена</div>
+          </div>
+        </div>
+        <div class="scheme-caption">спростування стаціонарної моделі</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="revolution.html" class="nav-button">← наукова революція</a>
+    </div>
+    <span class="chapter-indicator">розділ viii • великий вибух</span>
+    <div class="nav-buttons">
+      <a href="proofs.html" class="nav-button">астрофізичні докази →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // === 1. ЗАКОН ГАББЛА ===
+    function drawHubble(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#0a0e14';
+      ctx.fillRect(0, 0, w, h);
+      
+      // центр спостереження (земля)
+      const centerX = w / 3;
+      const centerY = h / 2;
+      
+      // галактики на різних відстанях
+      const galaxies = [
+        { dist: 30, size: 4, v: 1 },
+        { dist: 60, size: 4, v: 2 },
+        { dist: 90, size: 3.5, v: 3 },
+        { dist: 130, size: 3, v: 4.5 },
+        { dist: 170, size: 2.5, v: 6 },
+        { dist: 220, size: 2, v: 8 }
+      ];
+      
+      // спостерігач
+      ctx.fillStyle = '#4a7a9a';
+      ctx.shadowColor = '#4a9aba';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#f0e6d3';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('спостерігач', centerX, centerY - 14);
+      
+      // галактики та вектори швидкості
+      galaxies.forEach((g, i) => {
+        const angle = (i * 0.8) - 0.5;
+        const x = centerX + Math.cos(angle) * g.dist;
+        const y = centerY + Math.sin(angle) * g.dist * 0.6;
+        
+        // галактика
+        ctx.fillStyle = '#8b4513';
+        ctx.shadowColor = '#b8860b';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(x, y, g.size, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // вектор швидкості (напрямок від центру)
+        const vAngle = angle;
+        const vLength = 15 + g.v * 8;
+        const vx = x + Math.cos(vAngle) * vLength;
+        const vy = y + Math.sin(vAngle) * vLength * 0.6;
+        
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#b8860b';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(vx, vy);
+        ctx.stroke();
+        
+        // наконечник стрілки
+        ctx.fillStyle = '#b8860b';
+        ctx.beginPath();
+        ctx.arc(vx, vy, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      // підпис
+      ctx.fillStyle = '#d4c9b8';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillText('v ∝ d', w - 30, h - 10);
+    }
+    
+    // === 2. ВЕЛИКИЙ ВИБУХ ===
+    function drawBigBang(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      const bgGrad = ctx.createLinearGradient(0, 0, w, 0);
+      bgGrad.addColorStop(0, '#0a0508');
+      bgGrad.addColorStop(0.3, '#1a0a10');
+      bgGrad.addColorStop(0.7, '#0a1525');
+      bgGrad.addColorStop(1, '#050a12');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      // сингулярність (лівий край)
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5a040';
+      ctx.shadowBlur = 25;
+      ctx.beginPath();
+      ctx.arc(15, h/2, 10, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // розширення (конус)
+      ctx.shadowBlur = 0;
+      const coneGrad = ctx.createLinearGradient(20, h/2, w, h/2);
+      coneGrad.addColorStop(0, '#f5d67a');
+      coneGrad.addColorStop(0.2, '#d4a76a');
+      coneGrad.addColorStop(0.5, '#8b4513');
+      coneGrad.addColorStop(1, '#4a6a8a');
+      
+      ctx.fillStyle = coneGrad;
+      ctx.globalAlpha = 0.3;
+      ctx.beginPath();
+      ctx.moveTo(20, h/2 - 10);
+      ctx.lineTo(w - 10, h/2 - 40);
+      ctx.lineTo(w - 10, h/2 + 40);
+      ctx.lineTo(20, h/2 + 10);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      
+      // структури (галактики) у правій частині
+      for (let i = 0; i < 12; i++) {
+        const x = w * 0.5 + Math.random() * w * 0.45;
+        const y = h/2 - 30 + Math.random() * 60;
+        const size = 2 + Math.random() * 4;
+        
+        ctx.fillStyle = i % 3 === 0 ? '#d4a76a' : '#8b4513';
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // мітки часу
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('t=0', 15, h/2 + 25);
+      ctx.fillText('380 000 р', w * 0.3, h/2 - 45);
+      ctx.fillText('13.8 млрд р', w - 40, h/2 - 45);
+    }
+    
+    // === 3. СТАЦІОНАРНИЙ ВСЕСВІТ ===
+    function drawSteady(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — рівномірне
+      ctx.fillStyle = '#0a1220';
+      ctx.fillRect(0, 0, w, h);
+      
+      // існуючі галактики
+      for (let i = 0; i < 20; i++) {
+        const x = 20 + Math.random() * (w - 40);
+        const y = 20 + Math.random() * (h - 40);
+        
+        ctx.fillStyle = '#4a6a8a';
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // новостворена матерія (атоми водню)
+      for (let i = 0; i < 15; i++) {
+        const x = 30 + Math.random() * (w - 60);
+        const y = 30 + Math.random() * (h - 60);
+        
+        ctx.fillStyle = '#f5d67a';
+        ctx.shadowColor = '#f5d040';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+      
+      // розширення (стрілки назовні)
+      ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        const startX = w/2 + Math.cos(angle) * 30;
+        const startY = h/2 + Math.sin(angle) * 30;
+        const endX = w/2 + Math.cos(angle) * 80;
+        const endY = h/2 + Math.sin(angle) * 80;
+        
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+      }
+      
+      // формула
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('ρ = const', w/2, h - 10);
+      ctx.fillText('dM/dt > 0', w/2, h - 22);
+    }
+    
+    // === 4. ДОСЛІДЖЕННЯ РАЙЛА ===
+    function drawRyle(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // осі
+      ctx.strokeStyle = '#4a4440';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, h - 30);
+      ctx.lineTo(w - 20, h - 30);
+      ctx.moveTo(40, h - 30);
+      ctx.lineTo(40, 20);
+      ctx.stroke();
+      
+      // підписи осей
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.fillStyle = '#4a4440';
+      ctx.textAlign = 'center';
+      ctx.fillText('відстань (червоне зміщення) →', w/2, h - 8);
+      ctx.save();
+      ctx.translate(15, h/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText('кількість радіоджерел →', 0, 0);
+      ctx.restore();
+      
+      // теоретична лінія стаціонарного всесвіту (пряма)
+      ctx.strokeStyle = '#4a6a8a';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(60, h - 50);
+      ctx.lineTo(w - 40, h - 50);
+      ctx.stroke();
+      
+      // спостережувана крива (надлишок далеких джерел)
+      ctx.strokeStyle = '#8b4513';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(60, h - 55);
+      ctx.lineTo(120, h - 55);
+      ctx.lineTo(180, h - 65);
+      ctx.lineTo(240, h - 80);
+      ctx.lineTo(300, h - 100);
+      ctx.lineTo(w - 40, h - 120);
+      ctx.stroke();
+      
+      // точки спостережень
+      const points = [
+        { x: 60, y: h - 55 }, { x: 90, y: h - 53 }, { x: 120, y: h - 55 },
+        { x: 150, y: h - 58 }, { x: 180, y: h - 65 }, { x: 210, y: h - 72 },
+        { x: 240, y: h - 80 }, { x: 270, y: h - 88 }, { x: 300, y: h - 100 }
+      ];
+      
+      points.forEach((p, i) => {
+        ctx.fillStyle = i < 3 ? '#f5d67a' : '#8b4513';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      // легенда на графіку
+      ctx.font = '6px "Old Standard TT", serif';
+      ctx.fillStyle = '#4a6a8a';
+      ctx.textAlign = 'right';
+      ctx.fillText('стаціонарна модель', w - 50, h - 60);
+      ctx.fillStyle = '#8b4513';
+      ctx.fillText('спостереження', w - 50, h - 75);
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function redrawAll() {
+      drawHubble('canvas-hubble');
+      drawBigBang('canvas-bigbang');
+      drawSteady('canvas-steady');
+      drawRyle('canvas-ryle');
+    }
+    
+    redrawAll();
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>
+```

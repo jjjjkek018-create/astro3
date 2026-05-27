@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • космічна інфляція</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .simulation-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .simulation-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .simulation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .simulation-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: radial-gradient(circle at 30% 40%, #0a0e14 0%, #020408 100%);
+      border-radius: 2px;
+      border: 1px solid var(--accent-gold);
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    
+    .simulation-canvas:hover {
+      box-shadow: 0 0 20px rgba(184, 134, 11, 0.15);
+    }
+    
+    .simulation-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+    
+    .sim-control-btn {
+      background: transparent;
+      border: 1px solid var(--rule);
+      color: var(--ink-light);
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: lowercase;
+      font-variant: small-caps;
+    }
+    
+    .sim-control-btn:hover {
+      background: var(--accent);
+      color: var(--paper);
+      border-color: var(--accent);
+    }
+    
+    .simulation-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .simulation-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .control-hint {
+      font-size: 0.65rem;
+      color: var(--ink-faint);
+      text-align: center;
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+    
+    .legend-compact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.65rem;
+      color: var(--ink-light);
+    }
+    
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.2rem;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ x</p>
+    <h1>реліктове випромінювання: остаточне спростування стаціонарної моделі та нові концептуальні аномалії</h1>
+    <div class="subtitle">cmb • пензіас і вілсон • проблема горизонту • проблема площинності</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>вирішальним експериментальним доказом, що остаточно закріпив перемогу теорії великого вибуху над моделлю стаціонарного стану, стало відкриття космічного мікрохвильового фонового випромінювання (реліктового випромінювання) у 1965 році американськими радіоастрономами арно пензіасом та робертом вілсоном.</p>
+      
+      <p>ще у 1948 році альфер та герман теоретично передбачили, що гарячий початок всесвіту, наповнений інтенсивним випромінюванням, повинен залишити після себе своєрідну електромагнітну луну. у момент рекомбінації (приблизно через 380 000 років після великого вибуху), коли температура впала достатньо для того, щоб електрони об'єдналися з ядрами у нейтральні атоми водню, всесвіт став прозорим.</p>
+      
+      <p>фотони, що вивільнилися тієї миті, почали безперешкодно подорожувати простором. через подальше розширення всесвіту довжина хвилі цих фотонів колосально розтягнулася, і, згідно з розрахунками, це випромінювання мало б охолонути до кількох градусів вище абсолютного нуля.</p>
+      
+      <p>працюючи з надчутливою рупорною антеною лабораторій белл для дослідження супутникового зв'язку, пензіас і вілсон випадково виявили постійний, ізотропний мікрохвильовий шум із температурою близько 2,7 кельвіна. цей шум не залежав від часу доби, пори року чи напрямку антени; він рівномірно надходив з усіх боків небесної сфери.</p>
+      
+      <p>після ретельної перевірки інструментів та усунення всіх можливих земних і галактичних перешкод, група фізиків-теоретиків з прінстонського університету під керівництвом роберта дікке правильно ідентифікувала цей сигнал як залишкове теплове випромінювання самого великого вибуху.</p>
+      
+      <p>спектр цього випромінювання ідеально збігався з кривою випромінювання абсолютно чорного тіла, що стало тріумфом теоретичної фізики і змусило більшість прихильників стаціонарної теорії відмовитися від своїх поглядів.</p>
+      
+      <p>незважаючи на цей безпрецедентний успіх, стандартна модель гарячого всесвіту зіткнулася з низкою нових, глибоких концептуальних аномалій, які не могла пояснити в рамках класичної загальної теорії відносності.</p>
+      
+      <p>по-перше, виникла «проблема горизонту». реліктове випромінювання демонструвало майже ідеальну температурну однорідність (з точністю до однієї стотисячної частки градуса) у протилежних кінцях спостережуваного космосу. однак у стандартній моделі лінійного розширення ці ділянки простору (розділені сьогодні мільярдами світлових років) ніколи в минулому не перебували у причинно-наслідковому зв'язку. вони розширювалися швидше, ніж світло могло б подолати відстань між ними, а отже, ніколи не могли б обмінятися тепловою енергією для досягнення такої ідеальної термодинамічної рівноваги до моменту випромінювання перших фотонів.</p>
+      
+      <p>по-друге, виникла «проблема площинності» — просторова кривина всесвіту виявилася невідрізненною від нуля (плоска евклідова геометрія). щоб всесвіт залишався плоским після 13,8 мільярда років розширення, густина маси-енергії у першу секунду після великого вибуху мала бути збалансована з критичною густиною з фантастичною точністю (одна частина на десять у п'ятнадцятому ступені). будь-яке мінімальне відхилення призвело б до того, що всесвіт або миттєво сколапсував би назад, або розлетівся б настільки швидко, що гравітація не змогла б сформувати жодної галактики.</p>
+      
+      <p>по-третє, фізика елементарних частинок (теорії великого об'єднання) передбачала, що під час охолодження раннього надгарячого середовища мало б утворитися безліч надмасивних топологічних дефектів — магнітних монополів. проте жоден такий монополь ніколи не був виявлений у спостереженнях, що створювало «проблему відсутності монополів».</p>
+    </div>
+    
+    <aside class="simulation-sidebar">
+      <div class="simulation-frame">
+        <div class="simulation-title">реліктове випромінювання • cmb</div>
+        <canvas id="canvas-cmb" class="simulation-canvas" width="340" height="340"></canvas>
+        <div class="simulation-controls">
+          <button class="sim-control-btn" data-action="reset">⟲ оновити</button>
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="cmb-temp">2.725 K</div>
+            <div class="stat-label">температура</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cmb-age">380 000</div>
+            <div class="stat-label">років після вв</div>
+          </div>
+        </div>
+        <div class="legend-compact">
+          <span><span class="legend-dot" style="background: #4a9aba;"></span> холодніші</span>
+          <span><span class="legend-dot" style="background: #f5d67a;"></span> тепліші</span>
+          <span><span class="legend-dot" style="background: #8b4513;"></span> гарячі</span>
+        </div>
+        <div class="simulation-caption">анізотропія ~10⁻⁵ • спектр абсолютно чорного тіла</div>
+        <div class="control-hint">✧ натисніть на полотно для оновлення ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">проблема горизонту</div>
+        <canvas id="canvas-horizon" class="scheme-canvas" width="340" height="200" style="aspect-ratio: 1.7/1;"></canvas>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value">~10⁻⁵</div>
+            <div class="stat-label">δT/T</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">>10⁹ св.р.</div>
+            <div class="stat-label">відстань</div>
+          </div>
+        </div>
+        <div class="simulation-caption">як протилежні ділянки досягли рівноваги?</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">проблема площинності</div>
+        <canvas id="canvas-flatness" class="scheme-canvas" width="340" height="200" style="aspect-ratio: 1.7/1;"></canvas>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value">Ω ≈ 1</div>
+            <div class="stat-label">густина</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10⁻¹⁵</div>
+            <div class="stat-label">точність</div>
+          </div>
+        </div>
+        <div class="simulation-caption">чому всесвіт ідеально плоский?</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">космічна інфляція • розв'язання</div>
+        <canvas id="canvas-inflation-solve" class="simulation-canvas" width="340" height="250" style="aspect-ratio: 1.36/1;"></canvas>
+        <div class="simulation-controls">
+          <button class="sim-control-btn" data-action="inflate">✨ інфляція</button>
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="inflate-factor">10²⁶</div>
+            <div class="stat-label">розширення</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="inflate-time">10⁻³² с</div>
+            <div class="stat-label">тривалість</div>
+          </div>
+        </div>
+        <div class="legend-compact">
+          <span><span class="legend-dot" style="background: #4a9aba;"></span> до інфляції</span>
+          <span><span class="legend-dot" style="background: #f5d67a;"></span> після інфляції</span>
+        </div>
+        <div class="simulation-caption">експоненційне розширення на 10⁻³² с</div>
+        <div class="control-hint">✧ натисніть кнопку для демонстрації ✧</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="proofs.html" class="nav-button">← астрофізичні докази</a>
+    </div>
+    <span class="chapter-indicator">розділ x • cmb та інфляція</span>
+    <div class="nav-buttons">
+      <a href="conclusions.html" class="nav-button">висновки →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    let inflated = false;
+    
+    // === 1. РЕЛІКТОВЕ ВИПРОМІНЮВАННЯ ===
+    function drawCMB(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — глибокий космос
+      ctx.fillStyle = '#050810';
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      const radius = Math.min(w, h) * 0.4;
+      
+      // базова температура (2.7K — мікрохвильовий фон)
+      const baseGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+      baseGrad.addColorStop(0, '#2a3a5a');
+      baseGrad.addColorStop(0.5, '#1a2a4a');
+      baseGrad.addColorStop(1, '#0a1525');
+      
+      ctx.fillStyle = baseGrad;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // анізотропія (флуктуації температури ~10⁻⁵)
+      for (let i = 0; i < 60; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = radius * (0.2 + Math.random() * 0.7);
+        const x = centerX + Math.cos(angle) * dist;
+        const y = centerY + Math.sin(angle) * dist;
+        
+        const fluctuation = Math.random();
+        let color;
+        if (fluctuation < 0.33) {
+          color = '#4a9aba'; // холодніша
+        } else if (fluctuation < 0.66) {
+          color = '#f5d67a'; // тепліша
+        } else {
+          color = '#8b4513'; // гаряча
+        }
+        
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.3 + Math.random() * 0.4;
+        ctx.beginPath();
+        ctx.arc(x, y, 4 + Math.random() * 8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1.0;
+      
+      // обідок
+      ctx.strokeStyle = '#b8860b';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // підпис
+      ctx.fillStyle = '#d4c9b8';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('cmb • реліктове випромінювання', centerX, h - 10);
+      
+      document.getElementById('cmb-temp').textContent = '2.725 K';
+      document.getElementById('cmb-age').textContent = '380 000';
+    }
+    
+    // === 2. ПРОБЛЕМА ГОРИЗОНТУ ===
+    function drawHorizon(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // дві причинно незв'язані області
+      const region1X = 60;
+      const region2X = 220;
+      const regionY = h/2 - 20;
+      
+      // область 1
+      ctx.fillStyle = '#4a9aba';
+      ctx.globalAlpha = 0.3;
+      ctx.beginPath();
+      ctx.arc(region1X, regionY, 40, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // область 2
+      ctx.fillStyle = '#4a9aba';
+      ctx.beginPath();
+      ctx.arc(region2X, regionY, 40, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      
+      // однакова температура всередині
+      ctx.fillStyle = '#1a2a4a';
+      ctx.font = '7px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('T = 2.725 K', region1X, regionY);
+      ctx.fillText('T = 2.725 K', region2X, regionY);
+      
+      // межі горизонтів
+      ctx.strokeStyle = '#8b4513';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.arc(region1X, regionY, 40, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(region2X, regionY, 40, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // стрілка "не було контакту"
+      ctx.strokeStyle = '#b8860b';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(region1X + 45, regionY - 10);
+      ctx.lineTo(region2X - 45, regionY - 10);
+      ctx.stroke();
+      
+      ctx.fillStyle = '#b8860b';
+      ctx.font = '6px "Old Standard TT", serif';
+      ctx.fillText('причинно незв\'язані', w/2, regionY - 20);
+      
+      // підпис
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '7px "Cormorant Garamond", serif';
+      ctx.fillText('проблема горизонту: як досягнуто рівноваги?', w/2, h - 15);
+    }
+    
+    // === 3. ПРОБЛЕМА ПЛОЩИННОСТІ ===
+    function drawFlatness(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // три геометрії
+      const centers = [70, w/2, 250];
+      const labels = ['Ω > 1', 'Ω = 1', 'Ω < 1'];
+      const shapes = ['closed', 'flat', 'open'];
+      
+      centers.forEach((cx, i) => {
+        // коло
+        ctx.strokeStyle = i === 1 ? '#8b4513' : '#4a9aba';
+        ctx.lineWidth = i === 1 ? 2.5 : 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, h/2 - 10, 30, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // внутрішні лінії для ілюстрації кривини
+        if (i === 0) {
+          // позитивна кривина — трикутник з сумою кутів > 180
+          ctx.strokeStyle = '#4a9aba';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(cx - 15, h/2 + 5);
+          ctx.lineTo(cx, h/2 - 25);
+          ctx.lineTo(cx + 15, h/2 + 5);
+          ctx.closePath();
+          ctx.stroke();
+        } else if (i === 1) {
+          // плоска — прямокутник
+          ctx.strokeStyle = '#8b4513';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(cx - 15, h/2 - 25, 30, 30);
+        } else {
+          // негативна кривина
+          ctx.strokeStyle = '#4a9aba';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(cx - 18, h/2 + 5);
+          ctx.lineTo(cx, h/2 - 25);
+          ctx.lineTo(cx + 18, h/2 + 5);
+          ctx.stroke();
+        }
+        
+        ctx.fillStyle = '#4a4440';
+        ctx.font = '7px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(labels[i], cx, h/2 + 30);
+      });
+      
+      // стрілка до плоского
+      ctx.strokeStyle = '#f5d67a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(100, h/2 - 40);
+      ctx.lineTo(160, h/2 - 40);
+      ctx.lineTo(w/2 - 15, h/2 - 40);
+      ctx.stroke();
+      
+      ctx.fillStyle = '#b8860b';
+      ctx.font = '6px "Old Standard TT", serif';
+      ctx.fillText('чому Ω = 1?', w/2, h/2 - 50);
+      
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '7px "Cormorant Garamond", serif';
+      ctx.fillText('проблема площинності', w/2, h - 15);
+    }
+    
+    // === 4. ІНФЛЯЦІЯ ЯК РОЗВ'ЯЗАННЯ ===
+    function drawInflationSolve(canvasId, isInflated) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      const bgGrad = ctx.createLinearGradient(0, 0, w, 0);
+      bgGrad.addColorStop(0, '#0a0508');
+      bgGrad.addColorStop(1, '#050a12');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      if (!isInflated) {
+        // до інфляції — маленька причинно зв'язана область
+        ctx.fillStyle = '#4a9aba';
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#f5d67a';
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 10, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.globalAlpha = 1.0;
+        ctx.strokeStyle = '#4a9aba';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#d4c9b8';
+        ctx.font = '7px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('до інфляції', centerX, centerY + 35);
+        ctx.fillText('маленька область', centerX, centerY + 48);
+        ctx.fillText('у тепловій рівновазі', centerX, centerY + 61);
+        
+        document.getElementById('inflate-factor').textContent = '1';
+        document.getElementById('inflate-time').textContent = 't < 10⁻³⁶ с';
+      } else {
+        // після інфляції — розтягнута область
+        ctx.fillStyle = '#f5d67a';
+        ctx.globalAlpha = 0.15;
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY, w * 0.45, h * 0.4, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // зорі/галактики як результат квантових флуктуацій
+        for (let i = 0; i < 30; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 30 + Math.random() * 100;
+          const x = centerX + Math.cos(angle) * dist;
+          const y = centerY + Math.sin(angle) * dist * 0.7;
+          
+          ctx.fillStyle = i % 4 === 0 ? '#f5d67a' : '#8b4513';
+          ctx.beginPath();
+          ctx.arc(x, y, 2 + Math.random() * 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        ctx.globalAlpha = 1.0;
+        ctx.strokeStyle = '#f5d67a';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY, w * 0.45, h * 0.4, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        ctx.fillStyle = '#d4c9b8';
+        ctx.font = '7px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('після інфляції', centerX, centerY + 80);
+        ctx.fillText('спостережуваний всесвіт', centerX, centerY + 93);
+        ctx.fillText('з первинними флуктуаціями', centerX, centerY + 106);
+        
+        document.getElementById('inflate-factor').textContent = '10²⁶';
+        document.getElementById('inflate-time').textContent = '10⁻³⁶ – 10⁻³² с';
+      }
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function redrawAll() {
+      drawCMB('canvas-cmb');
+      drawHorizon('canvas-horizon');
+      drawFlatness('canvas-flatness');
+      drawInflationSolve('canvas-inflation-solve', inflated);
+    }
+    
+    redrawAll();
+    
+    // обробники кнопок
+    document.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        if (action === 'reset') {
+          drawCMB('canvas-cmb');
+        } else if (action === 'inflate') {
+          inflated = !inflated;
+          drawInflationSolve('canvas-inflation-solve', inflated);
+        }
+      });
+    });
+    
+    document.getElementById('canvas-cmb').addEventListener('click', () => {
+      drawCMB('canvas-cmb');
+    });
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>

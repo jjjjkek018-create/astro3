@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • давня греція</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .gallery-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .gallery-frame {
+      background: rgba(232, 226, 216, 0.3);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .gallery-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: rgba(201, 191, 178, 0.15);
+      border: 1px dashed var(--rule);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faint);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .gallery-placeholder::before {
+      content: 'Ω';
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-gold);
+      opacity: 0.6;
+      font-style: normal;
+    }
+    
+    .gallery-caption {
+      margin-top: 0.75rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+      border-top: 1px dotted var(--rule);
+      padding-top: 0.75rem;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.4rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .greek {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .gallery-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ vi</p>
+    <h1>давньогрецька натурфілософія: перехід від міфу до логосу та механістична модель анаксімандра</h1>
+    <div class="subtitle">іонійська школа • апейрон • циліндрична земля • порожнисті кільця</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>кардинальний історичний злам у розумінні космосу — перехід від міфологічного світогляду до раціонального наукового аналізу — відбувся в іонійській філософській школі давньої греції у шостому столітті до нашої ери. цей зсув парадигми, який в історіографії класифікується як перехід «від міфу до логосу», передбачав радикальну деміфологізацію природних явищ.</p>
+      
+      <p>філософи-досократики почали шукати пояснення будови всесвіту, що базувалися на іманентних природних законах, а не на антропоморфному свавіллі чи втручанні богів.</p>
+      
+      <p>найвидатнішим представником цієї інтелектуальної революції став анаксімандр мілетський (учень фалеса), який створив першу в історії людства суто механістичну та геометричну космологічну модель.</p>
+      
+      <p>на відміну від своїх попередників, які шукали першооснову світу в конкретних матеріальних стихіях (як фалес у воді), анаксімандр запровадив концепцію абстрактного <span class="greek">архе</span>. першопричиною всього сущого він назвав <span class="greek">апейрон</span> — безмежну, невизначену, нескінченну в часі та просторі субстанцію, яка перебуває у вічному русі. з апейрона виділяються протилежності (тепле і холодне, сухе і вологе), взаємодія яких генерує нескінченну кількість світів, що виникають і згодом знову розчиняються в цій першооснові.</p>
+      
+      <p>астрономічна модель анаксімандра стала безпрецедентним розривом із традицією. він відкинув ідею твердого небесного купола і створив концепцію відкритого всесвіту.</p>
+      
+      <p>анаксімандр стверджував, що земля має форму масивного циліндра (подібного до барабана кам'яної колони), діаметр якого втричі перевищує висоту, і людство проживає на його верхній плоскій основі.</p>
+      
+      <p>найважливішим концептуальним кроком стало його твердження, що земля вільно висить у центрі космічного простору і не потребує жодної фізичної опори. доведення цього феномену спиралося на філософський принцип достатньої підстави: оскільки земля розташована точно в геометричному центрі абсолютно симетричного всесвіту, вона рівновіддалена від усіх його країв, а отже, не має жодної логічної чи фізичної причини рухатися в будь-якому конкретному напрямку (ні вгору, ні вниз, ні вбоки).</p>
+      
+      <p>природу небесних світил анаксімандр також пояснив за допомогою механіки. він стверджував, що сонце, місяць та зорі не є живими істотами чи божествами, а являють собою гігантські порожнисті кільця або колеса, наповнені космічним вогнем. цей внутрішній вогонь стає видимим для спостерігача на землі лише через спеціальні трубкоподібні отвори в кільцях.</p>
+      
+      <p>місячні фази та сонячні затемнення логічно пояснювалися тимчасовим перекриттям цих отворів потоками повітря. більше того, астроном вперше спробував розрахувати відстані до цих кілець, застосувавши математичну прогресію з основою три: кільце зірок розташоване найближче (на відстані дев'яти земних радіусів), кільце місяця — далі (вісімнадцять радіусів), а кільце сонця — найдалі (двадцять сім радіусів).</p>
+      
+      <p>попри фактичну хибність цих конкретних цифр, сама спроба застосування математичних пропорцій для побудови тривимірної просторової моделі космосу заклала епістемологічні основи всієї подальшої теоретичної астрофізики.</p>
+    </div>
+    
+    <aside class="gallery-sidebar">
+      <div class="gallery-frame">
+        <img src="fig11.jpg" alt="апейрон — безмежна першооснова" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 1 — вічний рух невизначеної субстанції</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig12.jpg" alt="циліндрична земля" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 2 — вільне зависання в центрі космосу</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig13.jpg" alt="порожнисті кільця, наповнені космічним вогнем" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 3 — сонце, місяць та зорі як отвори в кільцях</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig14.jpg" alt="математична прогресія 9, 18, 27 земних радіусів" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 4 — перша спроба обчислити космічні відстані</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig15.jpg" alt="затемнення — перекриття отворів потоками повітря" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 5 — механістичне пояснення небесних явищ</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig16.jpg" alt="нескінченна кількість світів" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 6 — циклічність космогенезу в апейроні</div>
+      </div>
+    </aside>
+  </div>
+    
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="bible.html" class="nav-button">← біблійна концепція</a>
+    </div>
+    <span class="chapter-indicator">розділ vi • іонійська школа</span>
+    <div class="nav-buttons">
+      <a href="islam.html" class="nav-button">ісламська астрономія →</a>
+    </div>
+  </nav>
+</main>
+
+</body>
+</html>

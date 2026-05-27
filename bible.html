@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • біблійна концепція</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .simulation-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .simulation-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .simulation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .simulation-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: radial-gradient(circle at 50% 30%, rgba(30, 27, 24, 0.8) 0%, rgba(8, 6, 4, 1) 100%);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      border: 1px solid var(--accent-gold);
+      margin-bottom: 0.75rem;
+    }
+    
+    .simulation-canvas:hover {
+      box-shadow: 0 0 24px rgba(184, 134, 11, 0.12);
+    }
+    
+    .simulation-info {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .simulation-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .simulation-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .control-hint {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      text-align: center;
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .hebrew {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .simulation-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ v</p>
+    <h1>космологія давнього близького сходу та біблійна концепція: архітектура тверді</h1>
+    <div class="subtitle">ракія • верхні води • небесні вікна • трирівневий всесвіт</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>для контрастування з подальшим античним раціоналізмом необхідно детально розглянути загальноприйняту давньоблизькосхідну космологічну парадигму, яка домінувала в регіоні протягом тисячоліть і знайшла своє детальне відображення у текстах біблії.</p>
+      
+      <p>згідно з цією феноменологічною моделлю, яка базувалася на безпосередньому візуальному сприйнятті, всесвіт мав чітку трирівневу архітектуру: небо, пласка дископодібна земля та підземні води (безодня або шеол).</p>
+      
+      <p>ключовим структурним елементом цієї моделі був так званий фірмамент (на давньоєврейській мові — <span class="hebrew">ракія</span>, від кореня, що означає «розплющувати метал» або «кувати»). він концептуалізувався як міцний, твердий, подібний до гігантської перевернутої півсфери або металевого купола бар'єр, який накривав землю.</p>
+      
+      <p>у першому розділі книги буття чітко артикулюється, що цей купол був створений богом на другий день космогенезу для того, аби відокремити нижні води (земні моря, річки, підземні джерела) від верхніх вод, які знаходилися над твердю.</p>
+      
+      <p>ці верхні космічні води уявлялися як невичерпний резервуар, що підтримувався куполом і слугував джерелом опадів, які проливалися на землю через спеціальні «небесні вікна».</p>
+      
+      <p>астрономічні об'єкти (сонце, місяць, зорі) вважалися фізично закріпленими на цій тверді або такими, що рухалися суворо визначеними траєкторіями безпосередньо під нею.</p>
+      
+      <p>ця просторова структура має прямі концептуальні паралелі з месопотамською міфологією, де роль небесного склепіння відігравала половина розсіченого тіла водяного монстра тіамат.</p>
+      
+      <p>такий архітектонічний космогонічний світогляд успішно функціонував і задовольняв епістемологічні потреби суспільств аж до епохи європейської наукової революції, коли розвиток оптичної та телескопічної астрономії остаточно зруйнував уявлення про наявність твердих небесних сфер, замінивши їх концепцією безмежного вакууму.</p>
+    </div>
+    
+    <aside class="simulation-sidebar">
+      <div class="simulation-frame">
+        <div class="simulation-title">ракія • твердь небесна</div>
+        <canvas id="canvas-raqia" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          металевий купол над пласкою землею
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value">верхні води</div>
+            <div class="stat-label">над твердю</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">нижні води</div>
+            <div class="stat-label">моря та безодня</div>
+          </div>
+        </div>
+        <div class="simulation-caption">день другий • відділення вод</div>
+        <div class="control-hint">✧ натисніть, щоб відкрити небесні вікна ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">трирівневий всесвіт</div>
+        <canvas id="canvas-three-levels" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          небо • земля • шеол
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="level-sun">сонце</div>
+            <div class="stat-label">на тверді</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="level-moon">місяць</div>
+            <div class="stat-label">на тверді</div>
+          </div>
+        </div>
+        <div class="simulation-caption">світила, закріплені на куполі</div>
+        <div class="control-hint">✧ натисніть, щоб оновити ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">небесні вікна • арруба</div>
+        <canvas id="canvas-windows" class="simulation-canvas" width="300" height="300"></canvas>
+        <div class="simulation-info">
+          джерела дощу та потопу
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="window-state">закриті</div>
+            <div class="stat-label">стан вікон</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="rain-intensity">0%</div>
+            <div class="stat-label">інтенсивність</div>
+          </div>
+        </div>
+        <div class="simulation-caption">верхні води проливаються крізь отвори</div>
+        <div class="control-hint">✧ натисніть, щоб відкрити/закрити вікна ✧</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="vedic.html" class="nav-button">← ведична космологія</a>
+    </div>
+    <span class="chapter-indicator">розділ v • архітектура тверді</span>
+    <div class="nav-buttons">
+      <a href="greece.html" class="nav-button">давня греція →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    let windowsOpen = false;
+    
+    // === 1. РАКІЯ — ТВЕРДЬ НЕБЕСНА ===
+    function drawRaqia(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — темрява до створення
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      bgGrad.addColorStop(0, '#0a0a14');
+      bgGrad.addColorStop(1, '#1a1820');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      // верхні води (над твердю)
+      const upperWaterGrad = ctx.createLinearGradient(0, 0, 0, h * 0.25);
+      upperWaterGrad.addColorStop(0, '#1a3a5c');
+      upperWaterGrad.addColorStop(1, '#0d1f33');
+      ctx.fillStyle = upperWaterGrad;
+      ctx.fillRect(0, 0, w, h * 0.2);
+      
+      // хвилі верхніх вод
+      ctx.strokeStyle = 'rgba(100, 160, 200, 0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 6; i++) {
+        const y = 10 + i * 8;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x < w; x += 15) {
+          ctx.lineTo(x, y + Math.sin(x * 0.03 + Date.now() * 0.001) * 4);
+        }
+        ctx.stroke();
+      }
+      
+      // твердь (ракія) — металевий купол
+      const domeY = h * 0.2;
+      const domeHeight = h * 0.5;
+      const domeWidth = w * 0.9;
+      
+      const domeGrad = ctx.createLinearGradient(0, domeY, 0, domeY + domeHeight);
+      domeGrad.addColorStop(0, '#8b7355');
+      domeGrad.addColorStop(0.3, '#6b5340');
+      domeGrad.addColorStop(0.7, '#4a3728');
+      domeGrad.addColorStop(1, '#3a2518');
+      
+      ctx.fillStyle = domeGrad;
+      ctx.shadowColor = '#b8860b';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.ellipse(w / 2, domeY + domeHeight * 0.4, domeWidth / 2, domeHeight * 0.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // металевий блиск на куполі
+      ctx.shadowBlur = 4;
+      ctx.strokeStyle = '#c9a87c';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(w / 2, domeY + domeHeight * 0.4, domeWidth / 2 - 2, domeHeight * 0.5 - 2, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // зорі, закріплені на тверді
+      ctx.shadowBlur = 6;
+      for (let i = 0; i < 20; i++) {
+        const angle = (i * 1.7) % (Math.PI * 2);
+        const radiusX = domeWidth / 2.5;
+        const radiusY = domeHeight * 0.4;
+        const x = w / 2 + Math.cos(angle) * radiusX * (0.6 + Math.random() * 0.4);
+        const y = domeY + domeHeight * 0.4 + Math.sin(angle) * radiusY * (0.5 + Math.random() * 0.5);
+        
+        ctx.fillStyle = i % 3 === 0 ? '#f5d67a' : '#e8dcc8';
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5 + (i % 3), 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      ctx.shadowBlur = 0;
+      
+      // пласка земля
+      ctx.fillStyle = '#3a5a3a';
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.85, w * 0.4, 15, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = '#2a4a2a';
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.85 + 2, w * 0.35, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // нижні води (безодня)
+      ctx.fillStyle = '#0d1f33';
+      ctx.fillRect(0, h * 0.9, w, h * 0.1);
+      
+      // підпис
+      ctx.font = 'italic 9px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('ракія — твердь небесна', w / 2, h - 10);
+    }
+    
+    // === 2. ТРИРІВНЕВИЙ ВСЕСВІТ ===
+    function drawThreeLevels(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#0a0a14';
+      ctx.fillRect(0, 0, w, h);
+      
+      // рівень 1: небо (верх)
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.35);
+      skyGrad.addColorStop(0, '#1a2a4a');
+      skyGrad.addColorStop(1, '#0d1525');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h * 0.35);
+      
+      // твердь як дуга
+      ctx.strokeStyle = '#8b7355';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(w / 2, h * 0.35, w * 0.4, 0, Math.PI, true);
+      ctx.stroke();
+      
+      // сонце на тверді
+      const sunX = w * 0.7;
+      const sunY = h * 0.25;
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5a040';
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 12, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // місяць на тверді
+      const moonX = w * 0.3;
+      const moonY = h * 0.28;
+      ctx.fillStyle = '#d4c9b8';
+      ctx.shadowColor = '#a0b0c0';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowBlur = 0;
+      
+      // зорі
+      for (let i = 0; i < 15; i++) {
+        const x = 20 + Math.random() * (w - 40);
+        const y = 10 + Math.random() * (h * 0.3);
+        ctx.fillStyle = '#e8dcc8';
+        ctx.beginPath();
+        ctx.arc(x, y, 1 + Math.random() * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // рівень 2: земля (середина)
+      ctx.fillStyle = '#3a5a3a';
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.55, w * 0.35, 18, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = '#2a4a2a';
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.55 + 3, w * 0.3, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // стовпи землі
+      ctx.strokeStyle = '#5a4a3a';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.3, h * 0.6);
+      ctx.lineTo(w * 0.3, h * 0.8);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(w * 0.7, h * 0.6);
+      ctx.lineTo(w * 0.7, h * 0.8);
+      ctx.stroke();
+      
+      // рівень 3: шеол / безодня (низ)
+      const sheolGrad = ctx.createLinearGradient(0, h * 0.75, 0, h);
+      sheolGrad.addColorStop(0, '#0d1525');
+      sheolGrad.addColorStop(1, '#050810');
+      ctx.fillStyle = sheolGrad;
+      ctx.fillRect(0, h * 0.75, w, h * 0.25);
+      
+      // підземні води
+      ctx.strokeStyle = 'rgba(50, 80, 120, 0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 5; i++) {
+        const y = h * 0.8 + i * 8;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x < w; x += 15) {
+          ctx.lineTo(x, y + Math.sin(x * 0.02) * 5);
+        }
+        ctx.stroke();
+      }
+      
+      // підписи
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('небо (шамаїм)', w / 2, 15);
+      ctx.fillText('земля (ерец)', w / 2, h * 0.5);
+      ctx.fillText('шеол / безодня', w / 2, h - 10);
+      
+      document.getElementById('level-sun').textContent = 'сонце';
+      document.getElementById('level-moon').textContent = 'місяць';
+    }
+    
+    // === 3. НЕБЕСНІ ВІКНА ===
+    function drawWindows(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — небо з твердю
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      bgGrad.addColorStop(0, '#0a1220');
+      bgGrad.addColorStop(1, '#1a1820');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      // твердь
+      ctx.fillStyle = '#6b5340';
+      ctx.shadowColor = '#8b7355';
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.4, w * 0.45, 60, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // верхні води над твердю
+      ctx.fillStyle = 'rgba(30, 60, 100, 0.4)';
+      ctx.fillRect(0, 0, w, h * 0.25);
+      
+      // небесні вікна (арруба)
+      const windowPositions = [
+        { x: w * 0.25, y: h * 0.3 },
+        { x: w * 0.5, y: h * 0.25 },
+        { x: w * 0.75, y: h * 0.3 }
+      ];
+      
+      windowPositions.forEach((pos, i) => {
+        // рама вікна
+        ctx.strokeStyle = '#c9a87c';
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 4;
+        ctx.strokeRect(pos.x - 12, pos.y - 8, 24, 16);
+        
+        if (windowsOpen) {
+          // відкрите вікно — вода ллється
+          ctx.fillStyle = 'rgba(100, 160, 220, 0.6)';
+          ctx.fillRect(pos.x - 10, pos.y - 6, 20, 12);
+          
+          // потоки води
+          const rainIntensity = 0.5 + Math.random() * 0.5;
+          for (let j = 0; j < 8 * rainIntensity; j++) {
+            const dropX = pos.x - 8 + Math.random() * 16;
+            const dropY = pos.y + 10 + j * 8 + Math.random() * 6;
+            
+            ctx.fillStyle = 'rgba(150, 200, 255, 0.4)';
+            ctx.beginPath();
+            ctx.arc(dropX, dropY, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          
+          document.getElementById('window-state').textContent = 'відкриті';
+          document.getElementById('rain-intensity').textContent = Math.floor(50 + Math.random() * 50) + '%';
+        } else {
+          // закрите вікно
+          ctx.fillStyle = '#3a2518';
+          ctx.fillRect(pos.x - 10, pos.y - 6, 20, 12);
+          
+          // засув
+          ctx.strokeStyle = '#8b7355';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(pos.x - 15, pos.y);
+          ctx.lineTo(pos.x + 15, pos.y);
+          ctx.stroke();
+          
+          document.getElementById('window-state').textContent = 'закриті';
+          document.getElementById('rain-intensity').textContent = '0%';
+        }
+      });
+      
+      ctx.shadowBlur = 0;
+      
+      // земля внизу
+      ctx.fillStyle = '#2a4a2a';
+      ctx.beginPath();
+      ctx.ellipse(w / 2, h * 0.85, w * 0.35, 15, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // якщо вікна відкриті — вода на землі
+      if (windowsOpen) {
+        ctx.fillStyle = 'rgba(80, 140, 200, 0.3)';
+        ctx.beginPath();
+        ctx.ellipse(w / 2, h * 0.82, w * 0.3, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // підпис
+      ctx.font = 'italic 9px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('арруба — небесні вікна', w / 2, h - 10);
+    }
+    
+    function redrawAll() {
+      drawRaqia('canvas-raqia');
+      drawThreeLevels('canvas-three-levels');
+      drawWindows('canvas-windows');
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    redrawAll();
+    
+    document.getElementById('canvas-raqia').addEventListener('click', function() {
+      drawRaqia('canvas-raqia');
+    });
+    
+    document.getElementById('canvas-three-levels').addEventListener('click', function() {
+      drawThreeLevels('canvas-three-levels');
+    });
+    
+    document.getElementById('canvas-windows').addEventListener('click', function() {
+      windowsOpen = !windowsOpen;
+      drawWindows('canvas-windows');
+    });
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>

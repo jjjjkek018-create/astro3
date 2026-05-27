@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • вступ</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* галерейний макет: текст ліворуч, простір для ілюстрацій праворуч */
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .gallery-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .gallery-frame {
+      background: rgba(232, 226, 216, 0.3);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .gallery-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: rgba(201, 191, 178, 0.15);
+      border: 1px dashed var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faint);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .gallery-placeholder::before {
+      content: '✧';
+      display: block;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-gold);
+      opacity: 0.5;
+      font-style: normal;
+    }
+    
+    .gallery-caption {
+      margin-top: 0.75rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+      border-top: 1px dotted var(--rule);
+      padding-top: 0.75rem;
+    }
+    
+    /* навігація між розділами */
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    /* заголовок розділу */
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .gallery-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ i</p>
+    <h1>вступ: гносеологічні передумови космогонічного пошуку та зародження археоастрономії</h1>
+    <div class="subtitle">від палеолітичних насічок до мегалітичних обсерваторій</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>історичний та антропологічний аналіз свідчить, що з найдавніших етапів свого розвитку людство виявляло стійку епістемологічну потребу в осягненні рухів небесних тіл. ця потреба стала фундаментальним підґрунтям для формування перших космогонічних концепцій, які інтегрували емпіричні спостереження у складні міфологічні та релігійні системи.</p>
+      
+      <p>археоастрономічні дослідження доводять, що систематична фіксація астрономічних явищ проводилася принаймні з епохи верхнього палеоліту, близько 28 000 років до нашої ери. на кістяних артефактах, знайдених у печерних стоянках того періоду, зафіксовані ритмічні місячні та сонячні позначки, що вказує на наявність рудиментарних календарних систем та здатність ранніх гомінідів до абстрактного моделювання часу.</p>
+      
+      <p>у період з п'ятого по третє тисячоліття до нашої ери творці мегалітичних споруд здійснювали значний технологічний стрибок у методології спостережень. використання масивних кам'яних кілець, камерних курганів та спеціально орієнтованих мегалітів дозволяло з високою точністю фіксувати крайні точки сходів та заходів сонця під час сонцестоянь і рівнодень, а також відстежувати складніші цикли руху місяця та зірок на горизонті.</p>
+      
+      <p>китайські, вавилонські та месоамериканські астрономи залишили детальні записи про видимий рух п'яти планет: меркурія, венери, марса, юпітера та сатурна. дослідники в галузі археоастрономії наголошують, що така інтенсивна спостережна діяльність мала не лише прагматичний, сільськогосподарський чи навігаційний характер. вона була зумовлена глибокою екзистенційною спробою знайти впорядкованість у хаотичному природному середовищі.</p>
+      
+      <p>циклічність небесних явищ сформувала у свідомості давньої людини первинні уявлення про симетрію, математичний порядок та передбачуваність простору. водночас виникла стійка парадигма, згідно з якою небесні тіла репрезентували божественні сутності або вищі сили, що мали безпосередній вплив на земні процеси. це призвело до створення складних пантеонів небесних богів, де кожен астрономічний об'єкт отримував власний онтологічний статус та сферу впливу на людське існування.</p>
+    </div>
+    
+     <aside class="gallery-sidebar">
+      <div class="gallery-frame">
+        <img src="fig1.png" alt="кістяний артефакт із місячними позначками" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 1 — абак з фазами місяця, печера бланшар</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig2.png" alt="мегалітичне коло" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 2 — астрономічна орієнтація мегалітів за сонцестояннями</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig3.png" alt="п'ять видимих планет" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 3 — траєкторії планет на небесній сфері</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig4.png" alt="пантеон небесних божеств" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 4 — астрономічні об'єкти як божественні сутності</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <span class="chapter-indicator">початок</span>
+    <a href="mesopotamia.html" class="nav-button">месопотамія →</a>
+  </nav>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • ісламська астрономія</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .gallery-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .gallery-frame {
+      background: rgba(232, 226, 216, 0.3);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .gallery-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: rgba(201, 191, 178, 0.15);
+      border: 1px dashed var(--rule);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faint);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .gallery-placeholder::before {
+      content: '☾';
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-gold);
+      opacity: 0.6;
+      font-style: normal;
+    }
+    
+    .gallery-caption {
+      margin-top: 0.75rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+      border-top: 1px dotted var(--rule);
+      padding-top: 0.75rem;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.2rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .arabic {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .gallery-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ vii</p>
+    <h1>ісламська астрономія: емпірична перевірка та інституціоналізація спостережень</h1>
+    <div class="subtitle">анва • перекладацький рух • обсерваторії • зіджі • наднова sn 1006</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>у добу європейського раннього середньовіччя безперервність розвитку астрономічних та космогонічних знань забезпечив ісламський світ. до прийняття ісламу арабські племена спиралися на давню емпіричну традицію <span class="arabic">анва</span>, яка скрупульозно вивчала періодичність сходів та заходів певних зірок і сузір'їв для задоволення практичних потреб навігації в пустелі та прогнозування метеорологічних змін.</p>
+      
+      <p>згодом, у період розквіту халіфату, ісламські вчені ініціювали масштабний перекладацький рух, інтегрувавши праці грецьких (насамперед «альмагест» птолемея) та індійських вчених (систему сіддхант), застосувавши до них суворий математичний і тригонометричний апарат.</p>
+      
+      <p>найважливішим концептуальним внеском цієї епохи стало створення сучасного типу астрономічної обсерваторії. на відміну від приватних пунктів спостереження античності, ісламська обсерваторія стала великою науково-дослідною установою з державним фінансуванням, власним постійним штатом науковців, стандартизованим інструментарієм та довгостроковими колективними програмами спостережень (як-от обсерваторії в маразі або славетна обсерваторія самарканда під керівництвом улугбека).</p>
+      
+      <p>ці монументальні установи дозволяли систематично фіксувати координати світил, уточнювати орбітальні моделі птолемея, виявляти в них математичні невідповідності та створювати високоточні астрономічні таблиці (<span class="arabic">зіджі</span>).</p>
+      
+      <p>філософське осмислення космосу у працях арабських мислителів незмінно підкріплювалося емпіричними даними. приміром, видатний філософ і лікар ібн сіна детально зафіксував та проаналізував спостереження наднової зорі sn 1006 у своєму медико-філософському трактаті «книга зцілення», що свідчить про глибоку інтеграцію спостережливої астрономії в загальну систему пізнання мінливості та еволюції всесвіту, суперечачи аристотелівській догмі про незмінність надмісячного світу.</p>
+    </div>
+    
+    <aside class="gallery-sidebar">
+      <div class="gallery-frame">
+        <img src="fig17.jpg" alt="традиція анва — сходи та заходи зірок" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 1 — доісламська навігація пустелею</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig18.jpg" alt="перекладацький рух — альмагест та сіддханти" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 2 — синтез грецької та індійської науки</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig19.jpg" alt="обсерваторія мараги" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 3 — перший інституціоналізований астрономічний центр</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig20.jpg" alt="обсерваторія улугбека в самарканді" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 4 — гігантський секстант та зоряні каталоги</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig21.jpg" alt="зіджі — астрономічні таблиці" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 5 — високоточні координати та орбітальні параметри</div>
+      </div>
+      
+      <div class="gallery-frame">
+        <img src="fig22.jpg" alt="наднова sn 1006 — спостереження ібн сіни" class="gallery-image" style="width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border: 1px solid var(--rule);">
+        <div class="gallery-caption">рис. 6 — спростування незмінності небес</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="greece.html" class="nav-button">← давня греція</a>
+    </div>
+    <span class="chapter-indicator">розділ vii • золота доба ісламу</span>
+    <div class="nav-buttons">
+      <a href="revolution.html" class="nav-button">наукова революція →</a>
+    </div>
+  </nav>
+</main>
+
+</body>
+</html>

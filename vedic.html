@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • ведична космологія</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .simulation-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .simulation-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .simulation-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .simulation-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.2 / 1;
+      background: radial-gradient(circle at 30% 40%, rgba(30, 27, 24, 0.9) 0%, rgba(10, 8, 6, 1) 100%);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      border: 1px solid var(--accent-gold);
+      margin-bottom: 0.75rem;
+    }
+    
+    .simulation-canvas:hover {
+      box-shadow: 0 0 24px rgba(184, 134, 11, 0.15);
+    }
+    
+    .simulation-info {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .simulation-stats {
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Old Standard TT', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dotted var(--rule);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    
+    .stat-label {
+      text-transform: lowercase;
+      font-variant: small-caps;
+      color: var(--ink-faint);
+    }
+    
+    .simulation-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .control-hint {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      text-align: center;
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.4rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 2rem;
+      background: rgba(232, 226, 216, 0.2);
+      border-left: 3px solid var(--accent);
+      font-style: italic;
+    }
+    
+    .sanskrit {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--accent-gold);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .simulation-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ iv</p>
+    <h1>ведична космологія: концепція гіраньягарбги та математичні макроцикли</h1>
+    <div class="subtitle">гіраньягарбга • юги • манвантари • кальпи • сур'я-сіддханта</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>індуїстська та ведична космогонія демонструє унікальний в історії цивілізації синтез глибокого філософського абстрагування та складної обчислювальної астрономії. фундаментальною космогонічною концепцією тут виступає <span class="sanskrit">гіраньягарбга</span> (термін, що дослівно перекладається із санскриту як золоте лоно, золотий зародок або золоте яйце).</p>
+      
+      <p>у гімнах «рігведи» (зокрема, в гіраньягарбга-сукті, мандала 10, гімн 121) описується, що всесвіт виник із первісного стану небуття, хаосу та абсолютної темряви, коли існували лише безмежні первісні води.</p>
+      
+      <p>у цьому космічному океані зародилося сліпуче золоте яйце, яке містило в собі потенціал усього проявленого та непроявленого космосу, а також свідомість першобога праджапаті (якого пізніше ототожнили з брахмою).</p>
+      
+      <p>згідно з текстами пуран та упанішад, після річного (у божественному вимірі) періоду дозрівання у порожнечі, це космічне яйце розкололося навпіл, утворивши дві півкулі: верхня півкуля стала небом (сваргою), нижня — землею (прітхві), а простір між ними заповнився повітрям. цей процес не вважався одноразовим актом. ведична філософія постулює нелінійну, циклічну природу часу, де всесвіт безперервно проходить через нескінченні стадії еманації (творення), збереження та повного розчинення (магапралайї).</p>
+      
+      <p>на практичному астрономічному рівні ці абстрактні філософські ідеї були формалізовані у вигляді грандіозних часових макроциклів, які використовувалися математиками для розрахунку орбітальних параметрів планет та прогнозування затемнень.</p>
+      
+      <p>найвидатнішим астрономічним трактатом стародавньої індії є «сур'я-сіддханта» (яка у своїй початковій формі датується періодом між четвертим та дев'ятим століттями нашої ери). цей текст класифікує час на вимірюваний (мурта) та невимірюваний (амурта).</p>
+      
+      <div class="pull-quote">
+        вимірюваний космічний час базується на ієрархічній системі макроциклів: чатур-юга (магаюга) — 4 320 000 сонячних років, повний цикл чотирьох епох (сатья, трета, двапара, калі-юга), що відображає процес моральної та фізичної деградації світу; манвантара — 306 720 000 років, період, що дорівнює 71 магаюзі, епоха правління одного космічного праотця ману; кальпа — 4 320 000 000 років, період, що складається з 14 манвантар, дорівнює одному дню з життя творця брахми, після якого настає ніч такої ж тривалості.
+      </div>
+      
+      <p>один повний цикл існування всесвіту (макрокосмічна доба брахми) становить 8,64 мільярда років. вражаючою деталлю є те, що тривалість кальпи концептуально та нумерично перегукується із сучасними радіоізотопними оцінками віку нашої планети та сонячної системи (близько 4,5 мільярда років).</p>
+      
+      <p>математичний апарат «сур'я-сіддханти» спирався на геоцентричну модель та передбачав, що на початку і наприкінці кожної магаюги всі видимі небесні тіла повертаються у вихідну точку своїх орбіт, утворюючи грандіозний парад планет. оперуючи цими колосальними часовими проміжками та ділячи їх на зафіксовану кількість обертів, індійські астрономи отримували надзвичайно точні сидеричні (зоряні) періоди планет.</p>
+      
+      <p>наприклад, період обертання місяця визначався у 27,322 дня (сучасне астрономічне значення — 27,32166 дня), меркурія — 87,97 дня (сучасне — 87,969), марса — 687 днів (сучасне — 686,98), юпітера — 4332,3 дня (сучасне — 4332,587).</p>
+      
+      <p>крім того, через переклади текстів на кшталт «явана-джатаки» індійська астрономія асимілювала концепції елліністичної науки (зокрема доробок гіппарха), інтегрувавши поняття кулястої землі, поділ екліптики на 360 градусів та систему епіциклів для пояснення ретроградного руху планет, що зробило ведичну космологію однією з найрозвиненіших обчислювальних систем античності.</p>
+    </div>
+    
+    <aside class="simulation-sidebar">
+      <div class="simulation-frame">
+        <div class="simulation-title">гіраньягарбга • золоте яйце</div>
+        <canvas id="canvas-hiranyagarbha" class="simulation-canvas" width="300" height="250"></canvas>
+        <div class="simulation-info">
+          космічний зародок у первісних водах
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value">небо</div>
+            <div class="stat-label">верхня півкуля</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">земля</div>
+            <div class="stat-label">нижня півкуля</div>
+          </div>
+        </div>
+        <div class="simulation-caption">розкол яйця • створення світів</div>
+        <div class="control-hint">✧ натисніть, щоб побачити акт творення ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">чатур-юга • цикл чотирьох епох</div>
+        <canvas id="canvas-yugas" class="simulation-canvas" width="300" height="250"></canvas>
+        <div class="simulation-info">
+          4 320 000 сонячних років
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="current-yuga">калі</div>
+            <div class="stat-label">поточна епоха</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="yuga-progress">5%</div>
+            <div class="stat-label">прогрес</div>
+          </div>
+        </div>
+        <div class="simulation-caption">сатья • трета • двапара • калі</div>
+        <div class="control-hint">✧ натисніть, щоб оновити візуалізацію ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">кальпа • день брахми</div>
+        <canvas id="canvas-kalpa" class="simulation-canvas" width="300" height="250"></canvas>
+        <div class="simulation-info">
+          4 320 000 000 сонячних років
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value">14</div>
+            <div class="stat-label">манвантар</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">8,64 млрд</div>
+            <div class="stat-label">років</div>
+          </div>
+        </div>
+        <div class="simulation-caption">цикл творення та розчинення</div>
+        <div class="control-hint">✧ натисніть, щоб оновити ✧</div>
+      </div>
+      
+      <div class="simulation-frame">
+        <div class="simulation-title">планетарні періоди • сур'я-сіддханта</div>
+        <canvas id="canvas-planets" class="simulation-canvas" width="300" height="250"></canvas>
+        <div class="simulation-info">
+          сидеричні періоди у днях
+        </div>
+        <div class="simulation-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="planet-name">місяць</div>
+            <div class="stat-label">об'єкт</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="planet-period">27.32</div>
+            <div class="stat-label">днів</div>
+          </div>
+        </div>
+        <div class="simulation-caption">точність до сотих часток дня</div>
+        <div class="control-hint">✧ натисніть для зміни планети ✧</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="section-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="egypt.html" class="nav-button">← єгипет</a>
+    </div>
+    <span class="chapter-indicator">розділ iv • сур'я-сіддханта</span>
+    <div class="nav-buttons">
+      <a href="bible.html" class="nav-button">архітектура тверді →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // === 1. ГІРАНЬЯГАРБГА — ЗОЛОТЕ ЯЙЦЕ ===
+    function drawHiranyagarbha(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // первісні води (темний океан)
+      const waterGrad = ctx.createLinearGradient(0, 0, 0, h);
+      waterGrad.addColorStop(0, '#0a1628');
+      waterGrad.addColorStop(0.5, '#061220');
+      waterGrad.addColorStop(1, '#020810');
+      ctx.fillStyle = waterGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      // хвилі на воді
+      ctx.strokeStyle = 'rgba(184, 134, 11, 0.15)';
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i < 8; i++) {
+        const y = h * 0.7 + i * 8 + Math.sin(Date.now() * 0.001 + i) * 4;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x < w; x += 20) {
+          ctx.lineTo(x, y + Math.sin(x * 0.02 + i) * 6);
+        }
+        ctx.stroke();
+      }
+      
+      // золоте яйце (гіраньягарбга)
+      const eggGrad = ctx.createRadialGradient(centerX - 10, centerY - 10, 5, centerX, centerY, 60);
+      eggGrad.addColorStop(0, '#f5d67a');
+      eggGrad.addColorStop(0.4, '#d4a76a');
+      eggGrad.addColorStop(0.7, '#b8860b');
+      eggGrad.addColorStop(1, '#8b6914');
+      
+      ctx.shadowColor = '#f5d67a';
+      ctx.shadowBlur = 30;
+      ctx.fillStyle = eggGrad;
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, 50, 65, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // внутрішнє світіння
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = '#fff8e7';
+      ctx.globalAlpha = 0.3;
+      ctx.beginPath();
+      ctx.ellipse(centerX - 5, centerY - 5, 25, 35, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      ctx.shadowBlur = 0;
+      
+      // лінія розколу (якщо яйце розкрите)
+      if (Math.random() > 0.5) {
+        ctx.strokeStyle = '#f5d67a';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 6]);
+        ctx.beginPath();
+        ctx.moveTo(centerX - 45, centerY);
+        ctx.lineTo(centerX + 45, centerY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      
+      // підпис
+      ctx.font = 'italic 9px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('гіраньягарбга', centerX, h - 15);
+    }
+    
+    // === 2. ЧОТИРИ ЮГИ ===
+    const yugas = ['сатья', 'трета', 'двапара', 'калі'];
+    const yugaColors = ['#f5d67a', '#d4a76a', '#b8860b', '#8b4513'];
+    const yugaLengths = [1728000, 1296000, 864000, 432000];
+    
+    function drawYugas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // космічне тло
+      const bgGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w/1.5);
+      bgGrad.addColorStop(0, '#1a1210');
+      bgGrad.addColorStop(1, '#050302');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      // колесо часу (калачакра)
+      const centerX = w / 2;
+      const centerY = h / 2 - 10;
+      const radius = Math.min(w, h) * 0.35;
+      
+      // зовнішнє коло
+      ctx.strokeStyle = '#b8860b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // чотири сектори юг
+      let startAngle = -Math.PI / 2;
+      const totalLength = yugaLengths.reduce((a, b) => a + b, 0);
+      
+      yugas.forEach((yuga, i) => {
+        const sweep = (yugaLengths[i] / totalLength) * Math.PI * 2;
+        const endAngle = startAngle + sweep;
+        
+        // сектор
+        ctx.fillStyle = yugaColors[i];
+        ctx.globalAlpha = 0.25 + (i * 0.05);
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius * 0.85, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fill();
+        
+        // межа сектора
+        ctx.strokeStyle = yugaColors[i];
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius * 0.85, startAngle, endAngle);
+        ctx.lineTo(centerX, centerY);
+        ctx.stroke();
+        
+        // назва юги
+        const labelAngle = startAngle + sweep / 2;
+        const labelX = centerX + Math.cos(labelAngle) * radius * 0.55;
+        const labelY = centerY + Math.sin(labelAngle) * radius * 0.55;
+        
+        ctx.font = '8px "Cormorant Garamond", serif';
+        ctx.fillStyle = '#f0e6d3';
+        ctx.globalAlpha = 0.9;
+        ctx.textAlign = 'center';
+        ctx.fillText(yuga, labelX, labelY);
+        
+        startAngle = endAngle;
+      });
+      
+      ctx.globalAlpha = 1.0;
+      
+      // індикатор поточної юги (калі)
+      const currentYugaIndex = 3;
+      const indicatorAngle = -Math.PI / 2 + (yugaLengths.slice(0, currentYugaIndex).reduce((a, b) => a + b, 0) / totalLength) * Math.PI * 2;
+      const indicatorX = centerX + Math.cos(indicatorAngle) * radius * 0.95;
+      const indicatorY = centerY + Math.sin(indicatorAngle) * radius * 0.95;
+      
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5d67a';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(indicatorX, indicatorY, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // підпис
+      ctx.font = '9px "Old Standard TT", serif';
+      ctx.fillStyle = '#7a7268';
+      ctx.fillText('калачакра • колесо часу', centerX, h - 10);
+      
+      document.getElementById('current-yuga').textContent = 'калі';
+      document.getElementById('yuga-progress').textContent = Math.floor(Math.random() * 8 + 2) + '%';
+    }
+    
+    // === 3. КАЛЬПА — ДЕНЬ БРАХМИ ===
+    function drawKalpa(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло — космічний простір
+      const bgGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+      bgGrad.addColorStop(0, '#0d1b2a');
+      bgGrad.addColorStop(1, '#020408');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      // 14 манвантар як концентричні кільця
+      for (let i = 0; i < 14; i++) {
+        const radius = 20 + i * 12;
+        const alpha = 0.15 + (i % 3) * 0.1;
+        
+        ctx.strokeStyle = i % 2 === 0 ? '#b8860b' : '#8b4513';
+        ctx.lineWidth = i % 3 === 0 ? 2 : 0.8;
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // крапки-зорі на орбітах
+        const numStars = 8 + i * 2;
+        for (let j = 0; j < numStars; j++) {
+          const angle = (j / numStars) * Math.PI * 2 + i * 0.5;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+          
+          ctx.fillStyle = j % 3 === 0 ? '#f5d67a' : '#d4a76a';
+          ctx.beginPath();
+          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      
+      ctx.globalAlpha = 1.0;
+      
+      // брахма у центрі
+      ctx.fillStyle = '#f5d67a';
+      ctx.shadowColor = '#f5d67a';
+      ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = '#fff8e7';
+      ctx.beginPath();
+      ctx.arc(centerX - 2, centerY - 2, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // підпис
+      ctx.font = 'italic 8px "Cormorant Garamond", serif';
+      ctx.fillStyle = '#d4c9b8';
+      ctx.textAlign = 'center';
+      ctx.fillText('брахма', centerX, centerY + 22);
+      
+      ctx.font = '9px "Old Standard TT", serif';
+      ctx.fillStyle = '#7a7268';
+      ctx.fillText('14 манвантар', centerX, h - 10);
+    }
+    
+    // === 4. ПЛАНЕТАРНІ ПЕРІОДИ ===
+    const planets = [
+      { name: 'місяць', period: '27.32', color: '#d4c9b8' },
+      { name: 'меркурій', period: '87.97', color: '#b8860b' },
+      { name: 'венера', period: '224.7', color: '#f5d67a' },
+      { name: 'марс', period: '687.0', color: '#8b4513' },
+      { name: 'юпітер', period: '4332.3', color: '#d4a76a' },
+      { name: 'сатурн', period: '10759', color: '#c9bfb2' }
+    ];
+    
+    let currentPlanetIndex = 0;
+    
+    function drawPlanets(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      const bgGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+      bgGrad.addColorStop(0, '#0a0a0f');
+      bgGrad.addColorStop(1, '#000000');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2 - 10;
+      
+      // земля в центрі (геоцентрична модель)
+      ctx.fillStyle = '#2a4a6a';
+      ctx.shadowColor = '#4a7a9a';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 12, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = '#3a6a4a';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(centerX - 3, centerY - 3, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // орбіти планет
+      const planet = planets[currentPlanetIndex];
+      const orbitRadius = 50;
+      
+      ctx.strokeStyle = planet.color;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 4]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, orbitRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // планета на орбіті
+      const angle = (Date.now() * 0.001) % (Math.PI * 2);
+      const planetX = centerX + Math.cos(angle) * orbitRadius;
+      const planetY = centerY + Math.sin(angle) * orbitRadius;
+      
+      ctx.fillStyle = planet.color;
+      ctx.shadowColor = planet.color;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(planetX, planetY, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // назва планети
+      ctx.font = '10px "Cormorant Garamond", serif';
+      ctx.fillStyle = planet.color;
+      ctx.textAlign = 'center';
+      ctx.fillText(planet.name, centerX, h - 20);
+      
+      ctx.font = '8px "Old Standard TT", serif';
+      ctx.fillStyle = '#7a7268';
+      ctx.fillText(planet.period + ' днів', centerX, h - 8);
+      
+      document.getElementById('planet-name').textContent = planet.name;
+      document.getElementById('planet-period').textContent = planet.period;
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function initAllCanvases() {
+      drawHiranyagarbha('canvas-hiranyagarbha');
+      drawYugas('canvas-yugas');
+      drawKalpa('canvas-kalpa');
+      drawPlanets('canvas-planets');
+    }
+    
+    // обробники кліків
+    document.getElementById('canvas-hiranyagarbha').addEventListener('click', function() {
+      drawHiranyagarbha('canvas-hiranyagarbha');
+    });
+    
+    document.getElementById('canvas-yugas').addEventListener('click', function() {
+      drawYugas('canvas-yugas');
+    });
+    
+    document.getElementById('canvas-kalpa').addEventListener('click', function() {
+      drawKalpa('canvas-kalpa');
+    });
+    
+    document.getElementById('canvas-planets').addEventListener('click', function() {
+      currentPlanetIndex = (currentPlanetIndex + 1) % planets.length;
+      drawPlanets('canvas-planets');
+    });
+    
+    initAllCanvases();
+    
+    // анімація для планет (оновлення позиції)
+    function animatePlanets() {
+      drawPlanets('canvas-planets');
+      requestAnimationFrame(animatePlanets);
+    }
+    animatePlanets();
+    
+    window.addEventListener('resize', function() {
+      initAllCanvases();
+    });
+  })();
+</script>
+
+</body>
+</html>

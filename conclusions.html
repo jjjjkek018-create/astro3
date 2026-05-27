@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>космогонія • висновки</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 3rem;
+      margin: 2rem 0;
+    }
+    
+    .text-content {
+      max-width: 100%;
+    }
+    
+    .timeline-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .timeline-frame {
+      background: rgba(243, 239, 232, 0.7);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--rule);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .timeline-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      border-bottom: 1px dotted var(--rule);
+      padding-bottom: 0.5rem;
+    }
+    
+    .timeline-canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.2 / 1;
+      background: #faf7f2;
+      border-radius: 2px;
+      border: 1px solid var(--rule);
+      margin-bottom: 0.75rem;
+    }
+    
+    .timeline-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.65rem;
+      color: var(--ink-light);
+    }
+    
+    .legend-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.2rem;
+    }
+    
+    .timeline-caption {
+      margin-top: 0.5rem;
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      text-align: center;
+      font-style: italic;
+    }
+    
+    .chapter-title {
+      margin-bottom: 2rem;
+    }
+    
+    .chapter-title h1 {
+      text-align: left;
+      border-bottom: none;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 2.4rem;
+    }
+    
+    .chapter-title h1::after {
+      display: none;
+    }
+    
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+    }
+    
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+    
+    .nav-button {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 0.05em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent-gold);
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+    }
+    
+    .nav-button:hover {
+      color: var(--accent);
+      border-bottom: 1px solid var(--accent);
+      background: rgba(184, 134, 11, 0.04);
+    }
+    
+    .chapter-indicator {
+      font-family: 'Old Standard TT', serif;
+      font-size: 0.85rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .conclusion-box {
+      margin: 2.5rem 0;
+      padding: 2rem;
+      background: rgba(232, 226, 216, 0.15);
+      border: 1px solid var(--rule);
+      border-left: 4px solid var(--accent);
+    }
+    
+    .conclusion-box p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .final-ornament {
+      text-align: center;
+      margin: 3rem 0 1rem;
+      font-size: 1.5rem;
+      letter-spacing: 1em;
+      color: var(--accent-gold);
+      opacity: 0.4;
+    }
+    
+    .epigraph {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      text-align: right;
+      margin-top: 2rem;
+      color: var(--ink-light);
+    }
+    
+    @media (max-width: 800px) {
+      .chapter-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .chapter-title h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="chapter-title">
+    <p class="chapter-indicator">розділ xi • епілог</p>
+    <h1>висновки</h1>
+    <div class="subtitle">від палеолітичних насічок до квантової космології</div>
+  </div>
+
+  <div class="chapter-layout">
+    <div class="text-content">
+      <p>детальне дослідження еволюції людських поглядів на будову всесвіту виявляє безперервну, глибоку епістемологічну лінію, що тягнеться від рудиментарних палеолітичних насічок на кістках до надскладних сучасних супутникових вимірювань квантової анізотропії космічного фону.</p>
+      
+      <p>архаїчні цивілізації месопотамії, давнього єгипту та ведичної індії трансформували спостережувану симетрію астрономічних явищ у грандіозні релігійні та міфологічні наративи. однак їхня сакральна діяльність базувалася на надзвичайно строгих, емпіричних математичних обчисленнях, що проявилися у точних зоряних каталогах mul.apin, фіксації сотічного циклу сіріуса та розрахунках багатомільйонних часових макроциклів юг і кальп.</p>
+      
+      <p>перехід від міфологічного опису до раціональної просторової механістики, революційно здійснений грецькими натурфілософами іонійської школи (зокрема, відкриття анаксімандром принципу вільного зависання землі в нескінченному апейроні), заклав критичний методологічний фундамент для абстрактного теоретичного моделювання простору без жодного звернення до надприродних сутностей чи твердих небесних куполів.</p>
+      
+      <p>цей раціональний інструментарій був збережений, математизований та збагачений інституціональними обсерваторними спостереженнями ісламських астрономів середньовіччя.</p>
+      
+      <p>сучасна фізична космологія, остаточно відкинувши антропоцентричні ілюзії та стаціонарні парадигми ідеального всесвіту, спирається на колосальний масив емпіричних даних: спектроскопію червоного зміщення далеких квазарів, радіоастрономічні підрахунки еволюції зоряних популяцій, строгий термодинамічний аналіз первинного нуклеосинтезу легких елементів та картографування реліктового мікрохвильового фону.</p>
+      
+      <p>теорія великого вибуху, концептуально доповнена квантовою космологічною інфляцією, сьогодні становить найповніший і найобґрунтованіший науковий опис еволюції матерії. вона переконливо демонструє, що велетенські структури сучасних галактичних скупчень є безпосереднім, гравітаційно посиленим наслідком субмікроскопічних квантових флуктуацій у найперші миті творення простору, підтверджуючи фундаментальну єдність іманентних законів мікросвіту та макрокосмосу.</p>
+      
+      <div class="conclusion-box">
+        <p>таким чином, прагнення людського розуму знайти порядок у складному русі зірок, що зародилося на світанку антропогенезу, логічно трансформувалося у високоточну науку, здатну математично реконструювати історію простору і часу від самого моменту їхнього виникнення з сингулярності.</p>
+        <p>космогонія — від міфу до логосу, від логосу до математики, від математики до квантової фізики — залишається найвеличнішим свідченням здатності людського інтелекту осягати безмежне.</p>
+      </div>
+      
+      <div class="epigraph">
+        «ми — спосіб космосу пізнати себе.»<br>
+        <span style="font-size: 0.85rem;">— карл саган</span>
+      </div>
+    </div>
+    
+    <aside class="timeline-sidebar">
+      <div class="timeline-frame">
+        <div class="timeline-title">хронологія космогонічної думки</div>
+        <canvas id="canvas-timeline" class="timeline-canvas" width="340" height="280"></canvas>
+        <div class="timeline-legend">
+          <span><span class="legend-dot" style="background: #4a9aba;"></span> міфологічний період</span>
+          <span><span class="legend-dot" style="background: #8b4513;"></span> натурфілософія</span>
+          <span><span class="legend-dot" style="background: #f5d67a;"></span> наукова космологія</span>
+        </div>
+        <div class="timeline-caption">від палеоліту до сучасності</div>
+      </div>
+      
+      <div class="timeline-frame">
+        <div class="timeline-title">єдність мікро- та макрокосмосу</div>
+        <canvas id="canvas-unity" class="timeline-canvas" width="340" height="280"></canvas>
+        <div class="timeline-legend">
+          <span><span class="legend-dot" style="background: #4a9aba;"></span> квантові флуктуації</span>
+          <span><span class="legend-dot" style="background: #f5d67a;"></span> інфляція</span>
+          <span><span class="legend-dot" style="background: #8b4513;"></span> великомасштабна структура</span>
+        </div>
+        <div class="timeline-caption">від 10⁻³⁵ м до 10²⁶ м</div>
+      </div>
+      
+      <div class="timeline-frame">
+        <div class="timeline-title">ключові постаті</div>
+        <canvas id="canvas-figures" class="timeline-canvas" width="340" height="200" style="aspect-ratio: 1.7/1;"></canvas>
+        <div class="timeline-caption">анаксімандр • птолемей • улугбек • габбл • гамов • гут</div>
+      </div>
+    </aside>
+  </div>
+  
+  <div class="final-ornament">✧ ✦ ✧</div>
+
+  <nav class="chapter-nav">
+    <div class="nav-buttons">
+      <a href="inflation.html" class="nav-button">← космічна інфляція</a>
+    </div>
+    <span class="chapter-indicator">розділ xi • завершення</span>
+    <div class="nav-buttons">
+      <a href="index.html" class="nav-button">початок ↺</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // === 1. ХРОНОЛОГІЯ КОСМОГОНІЧНОЇ ДУМКИ ===
+    function drawTimeline(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      // лінія часу
+      const startX = 30;
+      const endX = w - 30;
+      const lineY = h / 2;
+      
+      ctx.strokeStyle = '#c9bfb2';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(startX, lineY);
+      ctx.lineTo(endX, lineY);
+      ctx.stroke();
+      
+      // події
+      const events = [
+        { x: 40, label: 'палеоліт', color: '#4a9aba', year: '-28 000' },
+        { x: 70, label: 'мегаліти', color: '#4a9aba', year: '-3000' },
+        { x: 100, label: 'месопотамія', color: '#4a9aba', year: '-1000' },
+        { x: 130, label: 'єгипет', color: '#4a9aba', year: '-2500' },
+        { x: 160, label: 'веди', color: '#4a9aba', year: '-500' },
+        { x: 190, label: 'анаксімандр', color: '#8b4513', year: '-550' },
+        { x: 220, label: 'іслам', color: '#8b4513', year: '+800' },
+        { x: 250, label: 'габбл', color: '#f5d67a', year: '1929' },
+        { x: 280, label: 'cmb', color: '#f5d67a', year: '1965' },
+        { x: 310, label: 'інфляція', color: '#f5d67a', year: '1980' }
+      ];
+      
+      events.forEach(ev => {
+        // точка
+        ctx.fillStyle = ev.color;
+        ctx.beginPath();
+        ctx.arc(ev.x, lineY, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // лінія до підпису
+        ctx.strokeStyle = ev.color;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(ev.x, lineY);
+        ctx.lineTo(ev.x, lineY - 15);
+        ctx.stroke();
+        
+        // підпис
+        ctx.fillStyle = '#4a4440';
+        ctx.font = '6px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(ev.label, ev.x, lineY - 20);
+        ctx.fillText(ev.year, ev.x, lineY + 15);
+      });
+      
+      // стрілка в кінці
+      ctx.fillStyle = '#c9bfb2';
+      ctx.beginPath();
+      ctx.moveTo(endX, lineY - 5);
+      ctx.lineTo(endX + 8, lineY);
+      ctx.lineTo(endX, lineY + 5);
+      ctx.fill();
+      
+      // заголовок
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('еволюція космогонічної думки', w/2, 20);
+    }
+    
+    // === 2. ЄДНІСТЬ МІКРО- ТА МАКРОКОСМОСУ ===
+    function drawUnity(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      const bgGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w/1.5);
+      bgGrad.addColorStop(0, '#0a0e14');
+      bgGrad.addColorStop(1, '#020408');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+      
+      const centerX = w / 2;
+      const centerY = h / 2;
+      
+      // квантові флуктуації в центрі
+      for (let i = 0; i < 30; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 20;
+        const x = centerX + Math.cos(angle) * dist;
+        const y = centerY + Math.sin(angle) * dist;
+        
+        ctx.fillStyle = '#4a9aba';
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // інфляція — розширення
+      ctx.strokeStyle = '#f5d67a';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      ctx.setLineDash([]);
+      ctx.strokeStyle = '#f5d67a';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 50, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // великомасштабна структура — галактики на периферії
+      for (let i = 0; i < 20; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 70 + Math.random() * 50;
+        const x = centerX + Math.cos(angle) * dist;
+        const y = centerY + Math.sin(angle) * dist * 0.6;
+        
+        ctx.fillStyle = '#8b4513';
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // з'єднання у філаменти
+        if (i % 2 === 0) {
+          const angle2 = angle + 0.5;
+          const dist2 = dist + 20;
+          const x2 = centerX + Math.cos(angle2) * dist2;
+          const y2 = centerY + Math.sin(angle2) * dist2 * 0.6;
+          
+          ctx.strokeStyle = 'rgba(139, 69, 19, 0.3)';
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+        }
+      }
+      
+      ctx.globalAlpha = 1.0;
+      
+      // підписи
+      ctx.fillStyle = '#4a9aba';
+      ctx.font = '6px "Old Standard TT", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('квантові', centerX, centerY - 15);
+      ctx.fillText('флуктуації', centerX, centerY - 5);
+      
+      ctx.fillStyle = '#f5d67a';
+      ctx.fillText('інфляція', centerX, centerY - 55);
+      
+      ctx.fillStyle = '#8b4513';
+      ctx.fillText('галактики', centerX, h - 15);
+      
+      ctx.fillStyle = '#d4c9b8';
+      ctx.font = '7px "Cormorant Garamond", serif';
+      ctx.fillText('єдність мікросвіту та макрокосмосу', centerX, 15);
+    }
+    
+    // === 3. КЛЮЧОВІ ПОСТАТІ ===
+    function drawFigures(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.clearRect(0, 0, w, h);
+      
+      // тло
+      ctx.fillStyle = '#faf7f2';
+      ctx.fillRect(0, 0, w, h);
+      
+      const figures = [
+        { name: 'анаксімандр', year: '610–546 до н.е.', x: 40, color: '#8b4513' },
+        { name: 'птолемей', year: '100–170 н.е.', x: 100, color: '#4a9aba' },
+        { name: 'улугбек', year: '1394–1449', x: 160, color: '#4a9aba' },
+        { name: 'габбл', year: '1889–1953', x: 220, color: '#f5d67a' },
+        { name: 'гамов', year: '1904–1968', x: 270, color: '#f5d67a' },
+        { name: 'гут', year: '1947–', x: 310, color: '#f5d67a' }
+      ];
+      
+      figures.forEach((fig, i) => {
+        // портрет (стилізоване коло)
+        ctx.fillStyle = fig.color;
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.arc(fig.x, h/2 - 10, 18, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.arc(fig.x, h/2 - 15, 10, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = '#4a4440';
+        ctx.font = '7px "Old Standard TT", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(fig.name, fig.x, h/2 + 15);
+        
+        ctx.font = '5px "Old Standard TT", serif';
+        ctx.fillStyle = '#7a7268';
+        ctx.fillText(fig.year, fig.x, h/2 + 25);
+      });
+      
+      // заголовок
+      ctx.fillStyle = '#4a4440';
+      ctx.font = '8px "Cormorant Garamond", serif';
+      ctx.fillText('архітектори космології', w/2, 20);
+    }
+    
+    // === ІНІЦІАЛІЗАЦІЯ ===
+    function redrawAll() {
+      drawTimeline('canvas-timeline');
+      drawUnity('canvas-unity');
+      drawFigures('canvas-figures');
+    }
+    
+    redrawAll();
+    
+    window.addEventListener('resize', function() {
+      redrawAll();
+    });
+  })();
+</script>
+
+</body>
+</html>
